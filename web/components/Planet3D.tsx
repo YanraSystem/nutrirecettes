@@ -83,16 +83,17 @@ function Globe() {
 
     mat.onBeforeCompile = (shader) => {
       shader.uniforms.uLandmask = { value: landmask };
-      shader.uniforms.uCreme = { value: new THREE.Color("#FAF7F2") };
-      shader.uniforms.uCharcoal = { value: new THREE.Color("#2D2A26") };
+      // Continents = or doux, mers = aubergine très foncé
+      shader.uniforms.uLand = { value: new THREE.Color("#D4A574") };
+      shader.uniforms.uSea = { value: new THREE.Color("#1A0A24") };
 
       shader.fragmentShader = shader.fragmentShader.replace(
         "uniform float opacity;",
         `
           uniform float opacity;
           uniform sampler2D uLandmask;
-          uniform vec3 uCreme;
-          uniform vec3 uCharcoal;
+          uniform vec3 uLand;
+          uniform vec3 uSea;
         `,
       );
 
@@ -105,7 +106,7 @@ function Globe() {
           float landFactor = 1.0 - sampledLandmask.r;
           // Léger smoothstep pour adoucir les côtes sans flouter les contours.
           landFactor = smoothstep(0.35, 0.7, landFactor);
-          vec3 mixedColor = mix(uCharcoal, uCreme, landFactor);
+          vec3 mixedColor = mix(uSea, uLand, landFactor);
           diffuseColor.rgb = mixedColor;
         `,
       );
@@ -134,24 +135,24 @@ function Globe() {
 function Atmosphere() {
   return (
     <>
-      {/* Halo proche : très ténu */}
+      {/* Halo proche : magenta très ténu */}
       <mesh>
         <sphereGeometry args={[1.015, 64, 64]} />
         <meshBasicMaterial
-          color="#C97B5F"
+          color="#8B3A6A"
           transparent
-          opacity={0.06}
+          opacity={0.18}
           side={THREE.BackSide}
           depthWrite={false}
         />
       </mesh>
-      {/* Halo large : suggère l'atmosphère */}
+      {/* Halo large : suggère l'atmosphère magenta */}
       <mesh>
         <sphereGeometry args={[1.08, 64, 64]} />
         <meshBasicMaterial
-          color="#C97B5F"
+          color="#8B3A6A"
           transparent
-          opacity={0.04}
+          opacity={0.08}
           side={THREE.BackSide}
           depthWrite={false}
         />
@@ -225,18 +226,18 @@ function CuisinePoint({
 
   return (
     <group ref={groupRef} position={position}>
-      {/* Glow translucide */}
+      {/* Glow translucide rose bright */}
       <mesh ref={glowRef}>
         <sphereGeometry args={[0.045, 16, 16]} />
         <meshBasicMaterial
-          color="#C97B5F"
+          color="#F4B5A6"
           transparent
-          opacity={0.25}
+          opacity={0.3}
           depthWrite={false}
         />
       </mesh>
 
-      {/* Point principal — porte les events */}
+      {/* Point principal rose bright — porte les events */}
       <mesh
         ref={dotRef}
         onPointerOver={interactive ? handlePointerOver : undefined}
@@ -245,9 +246,9 @@ function CuisinePoint({
       >
         <sphereGeometry args={[0.025, 24, 24]} />
         <meshStandardMaterial
-          color="#C97B5F"
-          emissive="#C97B5F"
-          emissiveIntensity={isHovered ? 1.2 : 0.6}
+          color="#F4B5A6"
+          emissive="#F4B5A6"
+          emissiveIntensity={isHovered ? 1.4 : 0.75}
           roughness={0.4}
           metalness={0.1}
           toneMapped={false}
@@ -266,17 +267,17 @@ function CuisinePoint({
           <div
             style={{
               transform: "translateY(-100%)",
-              background: "rgba(45, 42, 38, 0.92)",
-              color: "#FAF7F2",
+              background: "rgba(26, 10, 36, 0.92)",
+              color: "#F8F2EA",
               padding: "12px 16px",
               borderRadius: 4,
               minWidth: 180,
-              boxShadow: "0 10px 30px rgba(0,0,0,0.35)",
+              boxShadow: "0 10px 30px rgba(0,0,0,0.45)",
               backdropFilter: "blur(8px)",
               fontFamily:
                 "var(--font-inter), ui-sans-serif, system-ui, sans-serif",
               whiteSpace: "nowrap",
-              borderLeft: "2px solid #C97B5F",
+              borderLeft: "2px solid #D4A574",
             }}
           >
             <div
@@ -305,7 +306,7 @@ function CuisinePoint({
                 fontSize: 9,
                 letterSpacing: "0.25em",
                 textTransform: "uppercase",
-                color: "#C97B5F",
+                color: "#D4A574",
                 fontWeight: 500,
               }}
             >
@@ -389,10 +390,13 @@ export default function Planet3D({
       }}
     >
       <Suspense fallback={null}>
-        {/* Lights — réduites pour ne pas brûler les continents crème */}
-        <ambientLight intensity={0.35} />
-        <directionalLight position={[3, 2, 4]} intensity={0.85} color="#FFF4E8" />
-        <pointLight position={[-2, -1, 3]} intensity={0.4} color="#C97B5F" />
+        {/* Lights — éclairent continents or, ambiance aubergine */}
+        <ambientLight intensity={0.4} />
+        <directionalLight position={[3, 2, 4]} intensity={0.95} color="#FFF4E8" />
+        {/* Point rose pâle pour éclairer les continents or */}
+        <pointLight position={[-2, -1, 3]} intensity={0.55} color="#F4B5A6" />
+        {/* Subtle magenta rim light pour profondeur */}
+        <pointLight position={[2, 1, -3]} intensity={0.3} color="#8B3A6A" />
 
         {/* Stars en arrière-plan, très subtiles */}
         <Stars

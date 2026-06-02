@@ -102,7 +102,7 @@ const API_URL = process.env.NEXT_PUBLIC_API_URL ?? "";
 
 const indicatorColor: Record<Recipe["indicateur_sante"], string> = {
   vert: "#88C26F",
-  orange: "#E8A89F",
+  orange: "#E8B57A",
   rouge: "#D87A6B",
 };
 
@@ -257,7 +257,10 @@ export default function RecipePage() {
 
   if (!recipe) {
     return (
-      <main className="flex min-h-screen items-center justify-center bg-creme text-mute">
+      <main
+        className="flex min-h-screen items-center justify-center"
+        style={{ background: "var(--bg-primary)", color: "var(--text-muted)" }}
+      >
         <p className="text-[0.7rem] uppercase tracking-[0.32em]">Chargement…</p>
       </main>
     );
@@ -302,95 +305,129 @@ export default function RecipePage() {
   const scoreOffset = SCORE_C * (1 - recipe.score_compatibilite / 100);
 
   return (
-    <div ref={rootRef} className="bg-creme text-charcoal">
+    <div
+      ref={rootRef}
+      style={{ background: "var(--bg-primary)", color: "var(--text-primary)" }}
+    >
       {/* ─────────────────────────────────────────────────────────────
-         SECTION 1 — HERO SPREAD
+         SECTION 1 — HERO MAGAZINE 2 COLONNES ÉDITORIAL
          ────────────────────────────────────────────────────────────── */}
       <section
         data-section="hero"
-        className="relative flex h-[100svh] min-h-[640px] w-full items-end overflow-hidden text-creme"
-        style={{ background: "var(--bg-deep)" }}
+        className="relative w-full overflow-hidden"
+        style={{
+          background:
+            "linear-gradient(180deg, var(--bg-deep) 0%, var(--bg-primary) 100%)",
+        }}
       >
-        {hasImage ? (
-          <>
-            <div
-              className="absolute inset-0 bg-cover bg-center"
-              style={{ backgroundImage: `url(${recipe.image_url})` }}
-              aria-hidden
-            />
-            {/* invisible img to detect broken urls */}
-            <img
-              src={recipe.image_url}
-              alt=""
-              className="hidden"
-              onError={() => setImageBroken(true)}
-            />
-          </>
-        ) : (
-          <div
-            className="absolute inset-0 flex items-center justify-center"
-            style={{
-              background:
-                "linear-gradient(135deg, #8B3A6A 0%, #1A0A24 55%, #D4A574 100%)",
-            }}
-            aria-hidden
-          >
-            <span className="select-none text-[18rem] leading-none opacity-40">
-              {recipe.drapeau}
-            </span>
-          </div>
-        )}
-
-        {/* gradient overlay aubergine */}
-        <div
-          className="pointer-events-none absolute inset-0"
-          style={{
-            background:
-              "linear-gradient(180deg, rgba(26,10,36,0.6) 0%, rgba(26,10,36,0) 28%, rgba(26,10,36,0) 45%, rgba(26,10,36,0.95) 100%)",
-          }}
-        />
-
         {/* top kicker */}
-        <div className="absolute left-0 right-0 top-0 z-10 mx-auto flex max-w-7xl items-center justify-between px-8 pt-10 text-[0.62rem] uppercase tracking-[0.32em] text-creme/85 md:text-[0.65rem]">
+        <div
+          className="relative z-10 mx-auto flex max-w-7xl items-center justify-between px-8 pt-10 text-[0.62rem] uppercase tracking-[0.32em] md:text-[0.65rem]"
+          style={{ color: "var(--rose-poudre)" }}
+        >
           <span className="font-medium">
             — {recipe.drapeau} {recipe.origine} · {recipe.categorie}
           </span>
           <button
             onClick={() => router.push("/")}
-            className="font-medium tracking-[0.32em] text-creme/70 transition-colors duration-300 hover:text-creme"
+            className="font-medium tracking-[0.32em] transition-colors duration-300"
+            style={{ color: "var(--text-secondary)" }}
           >
             NutriRecettes
           </button>
         </div>
 
-        {/* title bottom-left — gradient or-rose */}
-        <div className="relative z-10 mx-auto w-full max-w-7xl px-8 pb-24 md:pb-28">
-          <h1
-            data-hero-title
-            className="font-serif italic leading-[0.92] tracking-[-0.035em] text-gradient-gold-rose"
-            style={{
-              fontSize: "clamp(3.5rem, 9vw, 9rem)",
-              filter:
-                "drop-shadow(0 4px 30px rgba(26, 10, 36, 0.7)) drop-shadow(0 0 60px rgba(232, 168, 159, 0.25))",
-            }}
-          >
-            {recipe.nom}
-          </h1>
-          <div className="mt-10 flex flex-wrap items-center gap-x-5 gap-y-2 text-[0.62rem] uppercase tracking-[0.32em] text-creme/80 md:text-[0.7rem]">
-            <span>{recipe.temps_total}</span>
-            <span className="inline-block h-[3px] w-[3px] rounded-full bg-creme/60" />
-            <span>{PERSONNES} pers.</span>
-            <span className="inline-block h-[3px] w-[3px] rounded-full bg-creme/60" />
-            <span>{recipe.source}</span>
+        <div className="relative z-10 mx-auto grid max-w-7xl grid-cols-1 items-center gap-12 px-8 pb-24 pt-16 md:grid-cols-12 md:gap-16 md:pb-32 md:pt-24">
+          {/* Texte gauche */}
+          <div className="md:col-span-7">
+            <h1
+              data-hero-title
+              className="font-serif italic leading-[0.92] tracking-[-0.035em] text-gradient-gold-rose"
+              style={{
+                fontSize: "clamp(3rem, 7.5vw, 7rem)",
+                filter:
+                  "drop-shadow(0 4px 30px rgba(26, 10, 36, 0.7)) drop-shadow(0 0 60px rgba(232, 168, 159, 0.25))",
+              }}
+            >
+              {recipe.nom}
+            </h1>
+            <div
+              className="mt-10 flex flex-wrap items-center gap-x-5 gap-y-2 text-[0.62rem] uppercase tracking-[0.32em] md:text-[0.7rem]"
+              style={{ color: "var(--text-secondary)" }}
+            >
+              <span>{recipe.temps_total}</span>
+              <span
+                className="inline-block h-[3px] w-[3px] rounded-full"
+                style={{ background: "var(--or-doux)" }}
+              />
+              <span>{PERSONNES} pers.</span>
+              <span
+                className="inline-block h-[3px] w-[3px] rounded-full"
+                style={{ background: "var(--or-doux)" }}
+              />
+              <span>{recipe.source}</span>
+            </div>
+          </div>
+
+          {/* Image droite — portrait magazine contained */}
+          <div className="md:col-span-5">
+            <div
+              className="relative w-full overflow-hidden"
+              style={{
+                aspectRatio: "4 / 5",
+                borderRadius: "2px",
+                boxShadow:
+                  "0 24px 60px rgba(139, 58, 106, 0.45), 0 0 0 1px rgba(232, 168, 159, 0.12)",
+              }}
+            >
+              {hasImage ? (
+                <>
+                  <img
+                    src={recipe.image_url}
+                    alt={recipe.nom}
+                    className="absolute inset-0 h-full w-full object-cover"
+                    onError={() => setImageBroken(true)}
+                  />
+                  {/* subtle aubergine vignette */}
+                  <div
+                    className="pointer-events-none absolute inset-0"
+                    style={{
+                      background:
+                        "linear-gradient(180deg, rgba(26,10,36,0.0) 60%, rgba(26,10,36,0.35) 100%)",
+                    }}
+                  />
+                </>
+              ) : (
+                <div
+                  className="absolute inset-0 flex items-center justify-center"
+                  style={{
+                    background:
+                      "linear-gradient(135deg, #2A1338 0%, #8B3A6A 55%, #D4A574 100%)",
+                  }}
+                  aria-hidden
+                >
+                  <span className="select-none text-[10rem] leading-none opacity-60">
+                    {recipe.drapeau}
+                  </span>
+                </div>
+              )}
+            </div>
           </div>
         </div>
 
         {/* scroll indicator */}
-        <div className="absolute bottom-8 left-1/2 z-10 -translate-x-1/2 text-center text-[0.58rem] uppercase tracking-[0.4em] text-creme/55">
-          <div className="mb-3 inline-block">Faites défiler</div>
-          <div className="mx-auto h-10 w-px bg-creme/40">
+        <div
+          className="relative z-10 mx-auto -mt-8 flex flex-col items-center pb-10 text-center text-[0.58rem] uppercase tracking-[0.4em]"
+          style={{ color: "var(--text-secondary)" }}
+        >
+          <div className="mb-3">Faites défiler</div>
+          <div
+            className="h-10 w-px"
+            style={{ background: "rgba(248, 242, 234, 0.35)" }}
+          >
             <motion.div
-              className="h-3 w-px bg-creme"
+              className="h-3 w-px"
+              style={{ background: "var(--or-doux)" }}
               animate={{ y: [0, 28, 0] }}
               transition={{ duration: 2.2, repeat: Infinity, ease: "easeInOut" }}
             />
@@ -401,15 +438,24 @@ export default function RecipePage() {
       {/* ─────────────────────────────────────────────────────────────
          SECTION 2 — INTRO ANECDOTE + FUN FACT
          ────────────────────────────────────────────────────────────── */}
-      <section className="border-b border-charcoal/8 bg-creme px-8 py-32 md:py-40">
+      <section
+        className="px-8 py-32 md:py-40"
+        style={{
+          background: "var(--bg-primary)",
+          borderBottom: "1px solid rgba(232, 168, 159, 0.12)",
+        }}
+      >
         <div className="mx-auto grid max-w-7xl grid-cols-1 gap-16 md:grid-cols-12 md:gap-20">
           <article className="md:col-span-7" data-reveal>
-            <p className="mb-10 text-[0.62rem] uppercase tracking-[0.32em] text-terracotta">
+            <p
+              className="mb-10 text-[0.62rem] uppercase tracking-[0.32em]"
+              style={{ color: "var(--rose-poudre)" }}
+            >
               — Anecdote du pays
             </p>
             <p
               className="font-serif text-[1.5rem] italic leading-[1.45] md:text-[1.85rem]"
-              style={{ color: "var(--bg-deep)" }}
+              style={{ color: "var(--text-primary)" }}
             >
               <span
                 className="float-left mr-3 mt-1 font-serif text-[5.5rem] not-italic leading-[0.85] md:text-[7rem]"
@@ -422,15 +468,27 @@ export default function RecipePage() {
           </article>
 
           <aside className="md:col-span-5" data-reveal>
-            <div className="border-l-2 border-terracotta pl-8">
-              <p className="mb-6 text-[0.62rem] uppercase tracking-[0.32em] text-mute">
+            <div
+              className="pl-8"
+              style={{ borderLeft: "2px solid var(--or-doux)" }}
+            >
+              <p
+                className="mb-6 text-[0.62rem] uppercase tracking-[0.32em]"
+                style={{ color: "var(--text-muted)" }}
+              >
                 — Le saviez-vous
               </p>
-              <p className="font-sans text-[1rem] leading-[1.75] text-warm-gray md:text-[1.05rem]">
+              <p
+                className="font-sans text-[1rem] leading-[1.75] md:text-[1.05rem]"
+                style={{ color: "var(--text-secondary)" }}
+              >
                 {recipe.fun_fact}
               </p>
 
-              <div className="mt-12 flex items-center gap-3 text-[0.62rem] uppercase tracking-[0.32em] text-mute">
+              <div
+                className="mt-12 flex items-center gap-3 text-[0.62rem] uppercase tracking-[0.32em]"
+                style={{ color: "var(--text-muted)" }}
+              >
                 <span
                   className="inline-block h-2 w-2 rounded-full"
                   style={{ backgroundColor: indicatorDot }}
@@ -445,19 +503,31 @@ export default function RecipePage() {
       {/* ─────────────────────────────────────────────────────────────
          SECTION 3 — INGREDIENTS
          ────────────────────────────────────────────────────────────── */}
-      <section className="border-b border-charcoal/8 bg-creme-warm px-8 py-32 md:py-40">
+      <section
+        className="px-8 py-32 md:py-40"
+        style={{
+          background: "var(--bg-deep)",
+          borderBottom: "1px solid rgba(232, 168, 159, 0.12)",
+        }}
+      >
         <div className="mx-auto max-w-7xl">
           <div className="mb-16 flex flex-col gap-6" data-reveal>
-            <p className="text-[0.62rem] uppercase tracking-[0.32em] text-terracotta">
+            <p
+              className="text-[0.62rem] uppercase tracking-[0.32em]"
+              style={{ color: "var(--rose-poudre)" }}
+            >
               — La liste
             </p>
             <h2
-              className="font-serif italic leading-[0.95] tracking-[-0.02em] text-charcoal"
+              className="font-serif italic leading-[0.95] tracking-[-0.02em] text-gradient-gold-rose"
               style={{ fontSize: "clamp(2.75rem, 6vw, 5rem)" }}
             >
               Ingrédients
             </h2>
-            <p className="text-[0.7rem] uppercase tracking-[0.32em] text-mute">
+            <p
+              className="text-[0.7rem] uppercase tracking-[0.32em]"
+              style={{ color: "var(--text-muted)" }}
+            >
               Pour {PERSONNES} personnes · {recipe.ingredients.length} éléments
             </p>
           </div>
@@ -469,12 +539,19 @@ export default function RecipePage() {
             {recipe.ingredients.map((ing, idx) => (
               <li
                 key={`${ing}-${idx}`}
-                className="flex items-baseline gap-6 border-b border-charcoal/10 py-5"
+                className="flex items-baseline gap-6 py-5"
+                style={{ borderBottom: "1px solid rgba(232, 168, 159, 0.12)" }}
               >
-                <span className="font-serif text-[1.05rem] italic text-terracotta/70 tabular-nums">
+                <span
+                  className="font-serif text-[1.05rem] italic tabular-nums"
+                  style={{ color: "var(--or-doux)" }}
+                >
                   {String(idx + 1).padStart(2, "0")}
                 </span>
-                <span className="font-sans text-[0.98rem] leading-relaxed text-charcoal">
+                <span
+                  className="font-sans text-[0.98rem] leading-relaxed"
+                  style={{ color: "var(--text-primary)" }}
+                >
                   {ing}
                 </span>
               </li>
@@ -485,15 +562,24 @@ export default function RecipePage() {
             <div className="mt-20" data-reveal>
               <button
                 onClick={() => setOpenSubs((v) => !v)}
-                className="group flex w-full items-center justify-between border-t border-charcoal/15 py-6 text-left transition-colors duration-300 hover:border-terracotta"
+                className="group flex w-full items-center justify-between py-6 text-left transition-colors duration-300"
+                style={{
+                  borderTop: "1px solid rgba(232, 168, 159, 0.2)",
+                }}
                 aria-expanded={openSubs}
               >
-                <span className="text-[0.7rem] uppercase tracking-[0.32em] text-charcoal group-hover:text-terracotta">
+                <span
+                  className="text-[0.7rem] uppercase tracking-[0.32em]"
+                  style={{ color: "var(--text-primary)" }}
+                >
                   Substitutions possibles · {Object.keys(recipe.substitutions).length}
                 </span>
                 <span
-                  className="font-serif text-[1.4rem] italic text-terracotta transition-transform duration-500"
-                  style={{ transform: openSubs ? "rotate(45deg)" : "rotate(0deg)" }}
+                  className="font-serif text-[1.4rem] italic transition-transform duration-500"
+                  style={{
+                    transform: openSubs ? "rotate(45deg)" : "rotate(0deg)",
+                    color: "var(--or-doux)",
+                  }}
                 >
                   +
                 </span>
@@ -508,16 +594,25 @@ export default function RecipePage() {
                 <div className="grid grid-cols-1 gap-x-16 gap-y-10 pb-2 pt-10 md:grid-cols-2">
                   {Object.entries(recipe.substitutions).map(([base, alts]) => (
                     <div key={base}>
-                      <p className="mb-3 font-serif text-[1.1rem] italic text-charcoal">
+                      <p
+                        className="mb-3 font-serif text-[1.1rem] italic"
+                        style={{ color: "var(--rose-poudre)" }}
+                      >
                         {base}
                       </p>
-                      <ul className="space-y-2 text-[0.92rem] text-warm-gray">
+                      <ul
+                        className="space-y-2 text-[0.92rem]"
+                        style={{ color: "var(--text-secondary)" }}
+                      >
                         {alts.map((alt) => (
                           <li
                             key={alt}
                             className="flex items-baseline gap-3 leading-relaxed"
                           >
-                            <span className="inline-block h-px w-4 translate-y-[-0.35em] bg-mute/60" />
+                            <span
+                              className="inline-block h-px w-4 translate-y-[-0.35em]"
+                              style={{ background: "var(--or-doux)" }}
+                            />
                             <span>{alt}</span>
                           </li>
                         ))}
@@ -534,14 +629,23 @@ export default function RecipePage() {
       {/* ─────────────────────────────────────────────────────────────
          SECTION 4 — PREPARATION
          ────────────────────────────────────────────────────────────── */}
-      <section className="border-b border-charcoal/8 bg-creme px-8 py-32 md:py-44">
+      <section
+        className="px-8 py-32 md:py-44"
+        style={{
+          background: "var(--bg-primary)",
+          borderBottom: "1px solid rgba(232, 168, 159, 0.12)",
+        }}
+      >
         <div className="mx-auto max-w-7xl">
           <div className="mb-20 flex flex-col gap-6" data-reveal>
-            <p className="text-[0.62rem] uppercase tracking-[0.32em] text-terracotta">
+            <p
+              className="text-[0.62rem] uppercase tracking-[0.32em]"
+              style={{ color: "var(--rose-poudre)" }}
+            >
               — La méthode
             </p>
             <h2
-              className="font-serif italic leading-[0.95] tracking-[-0.02em] text-charcoal"
+              className="font-serif italic leading-[0.95] tracking-[-0.02em] text-gradient-gold-rose"
               style={{ fontSize: "clamp(2.75rem, 6vw, 5rem)" }}
             >
               Préparation
@@ -553,14 +657,14 @@ export default function RecipePage() {
               <li
                 key={idx}
                 data-step
-                className="grid grid-cols-12 items-start gap-6 border-t border-charcoal/10 py-14 md:gap-12 md:py-20"
+                className="grid grid-cols-12 items-start gap-6 py-14 md:gap-12 md:py-20"
+                style={{ borderTop: "1px solid rgba(232, 168, 159, 0.15)" }}
               >
                 <div
                   data-step-num
-                  className="col-span-3 font-serif italic leading-none tracking-[-0.04em] md:col-span-3"
+                  className="col-span-3 font-serif italic leading-none tracking-[-0.04em] text-gradient-gold-rose md:col-span-3"
                   style={{
                     fontSize: "clamp(4rem, 8vw, 8rem)",
-                    color: "var(--rose-poudre)",
                   }}
                 >
                   {String(idx + 1).padStart(2, "0")}
@@ -569,7 +673,10 @@ export default function RecipePage() {
                   data-step-body
                   className="col-span-9 pt-3 md:col-span-9 md:pt-6"
                 >
-                  <p className="font-sans text-[1.05rem] leading-[1.75] text-charcoal md:text-[1.15rem]">
+                  <p
+                    className="font-sans text-[1.05rem] leading-[1.75] md:text-[1.15rem]"
+                    style={{ color: "var(--text-primary)" }}
+                  >
                     {etape}
                   </p>
                 </div>
@@ -583,7 +690,13 @@ export default function RecipePage() {
          SECTION 5 — ASTUCE CHEF
          ────────────────────────────────────────────────────────────── */}
       {recipe.astuce_chef && (
-        <section className="border-b border-charcoal/8 bg-creme-warm px-8 py-32 md:py-44">
+        <section
+          className="px-8 py-32 md:py-44"
+          style={{
+            background: "var(--bg-elevated)",
+            borderBottom: "1px solid rgba(232, 168, 159, 0.12)",
+          }}
+        >
           <div className="mx-auto max-w-4xl text-center" data-reveal>
             <span
               className="block font-serif italic leading-none"
@@ -599,12 +712,15 @@ export default function RecipePage() {
               className="mt-2 font-serif italic leading-[1.4]"
               style={{
                 fontSize: "clamp(1.4rem, 2.6vw, 1.95rem)",
-                color: "var(--bg-deep)",
+                color: "var(--text-primary)",
               }}
             >
               {recipe.astuce_chef}
             </blockquote>
-            <p className="mt-10 text-[0.62rem] uppercase tracking-[0.32em] text-mute">
+            <p
+              className="mt-10 text-[0.62rem] uppercase tracking-[0.32em]"
+              style={{ color: "var(--or-doux)" }}
+            >
               — Astuce du chef
             </p>
           </div>
@@ -614,15 +730,32 @@ export default function RecipePage() {
       {/* ─────────────────────────────────────────────────────────────
          SECTION 6 — NUTRITION + COUT
          ────────────────────────────────────────────────────────────── */}
-      <section className="border-b border-charcoal/8 bg-creme px-8 py-32 md:py-40">
+      <section
+        className="px-8 py-32 md:py-40"
+        style={{
+          background: "var(--bg-primary)",
+          borderBottom: "1px solid rgba(232, 168, 159, 0.12)",
+        }}
+      >
         <div className="mx-auto grid max-w-7xl grid-cols-1 gap-20 md:grid-cols-2 md:gap-28">
           {/* Nutrition */}
-          <div data-reveal>
-            <p className="mb-8 text-[0.62rem] uppercase tracking-[0.32em] text-terracotta">
+          <div
+            data-reveal
+            className="p-10"
+            style={{
+              background: "var(--bg-elevated)",
+              border: "1px solid rgba(232, 168, 159, 0.18)",
+              borderRadius: 2,
+            }}
+          >
+            <p
+              className="mb-8 text-[0.62rem] uppercase tracking-[0.32em]"
+              style={{ color: "var(--rose-poudre)" }}
+            >
               — Valeurs nutritionnelles
             </p>
             <h3
-              className="mb-12 font-serif italic leading-[0.95] tracking-[-0.02em] text-charcoal"
+              className="mb-12 font-serif italic leading-[0.95] tracking-[-0.02em] text-gradient-gold-rose"
               style={{ fontSize: "clamp(2rem, 4vw, 3rem)" }}
             >
               Par personne
@@ -636,32 +769,55 @@ export default function RecipePage() {
                 ["Lipides", `${recipe.nutrition.lipides_g} g`, ajrRatios?.lipides ?? 0],
                 ["Fibres", `${recipe.nutrition.fibres_g} g`, ajrRatios?.fibres ?? 0],
               ] as const).map(([label, value, ratio]) => (
-                <li key={label} className="border-t border-charcoal/10 py-6">
+                <li
+                  key={label}
+                  className="py-6"
+                  style={{ borderTop: "1px solid rgba(232, 168, 159, 0.15)" }}
+                >
                   <div className="flex items-baseline justify-between">
-                    <span className="text-[0.65rem] uppercase tracking-[0.32em] text-mute">
+                    <span
+                      className="text-[0.65rem] uppercase tracking-[0.32em]"
+                      style={{ color: "var(--text-muted)" }}
+                    >
                       {label}
                     </span>
-                    <span className="font-serif text-[1.4rem] italic text-charcoal">
+                    <span
+                      className="font-serif text-[1.4rem] italic"
+                      style={{ color: "var(--text-primary)" }}
+                    >
                       {value}
                     </span>
                   </div>
-                  <div className="mt-4 h-px w-full bg-charcoal/10">
+                  <div
+                    className="mt-4 h-px w-full"
+                    style={{ background: "rgba(232, 168, 159, 0.15)" }}
+                  >
                     <motion.div
-                      className="h-px bg-terracotta"
+                      className="h-px"
+                      style={{ background: "var(--or-doux)" }}
                       initial={{ width: 0 }}
                       whileInView={{ width: `${Math.round(ratio * 100)}%` }}
                       viewport={{ once: true, amount: 0.4 }}
                       transition={{ duration: 1.2, ease: [0.22, 1, 0.36, 1] }}
                     />
                   </div>
-                  <p className="mt-2 text-[0.6rem] uppercase tracking-[0.28em] text-mute/70">
+                  <p
+                    className="mt-2 text-[0.6rem] uppercase tracking-[0.28em]"
+                    style={{ color: "var(--text-muted)" }}
+                  >
                     {Math.round(ratio * 100)}% AJR
                   </p>
                 </li>
               ))}
             </ul>
 
-            <div className="mt-10 flex items-center gap-3 border-t border-charcoal/10 pt-8 text-[0.65rem] uppercase tracking-[0.32em] text-charcoal">
+            <div
+              className="mt-10 flex items-center gap-3 pt-8 text-[0.65rem] uppercase tracking-[0.32em]"
+              style={{
+                borderTop: "1px solid rgba(232, 168, 159, 0.18)",
+                color: "var(--text-primary)",
+              }}
+            >
               <span
                 className="inline-block h-2.5 w-2.5 rounded-full"
                 style={{ backgroundColor: indicatorDot }}
@@ -671,9 +827,19 @@ export default function RecipePage() {
           </div>
 
           {/* Coût + compatibilité */}
-          <div data-reveal className="flex flex-col gap-20">
-            <div>
-              <p className="mb-8 text-[0.62rem] uppercase tracking-[0.32em] text-terracotta">
+          <div data-reveal className="flex flex-col gap-12">
+            <div
+              className="p-10"
+              style={{
+                background: "var(--bg-elevated)",
+                border: "1px solid rgba(232, 168, 159, 0.18)",
+                borderRadius: 2,
+              }}
+            >
+              <p
+                className="mb-8 text-[0.62rem] uppercase tracking-[0.32em]"
+                style={{ color: "var(--rose-poudre)" }}
+              >
                 — Coût estimé
               </p>
               <div
@@ -682,12 +848,22 @@ export default function RecipePage() {
               >
                 {formatEur(recipe.cout_estime_eur)}
               </div>
-              <p className="mt-8 text-[0.68rem] uppercase tracking-[0.32em] text-mute">
+              <p
+                className="mt-8 text-[0.68rem] uppercase tracking-[0.32em]"
+                style={{ color: "var(--text-muted)" }}
+              >
                 Coût total · environ {formatEur(recipe.cout_par_personne_eur)} / personne
               </p>
             </div>
 
-            <div className="flex items-center gap-10 border-t border-charcoal/10 pt-12">
+            <div
+              className="flex items-center gap-10 p-10"
+              style={{
+                background: "var(--bg-elevated)",
+                border: "1px solid rgba(232, 168, 159, 0.18)",
+                borderRadius: 2,
+              }}
+            >
               {/* Score circle */}
               <div className="relative h-32 w-32 shrink-0">
                 <svg
@@ -700,7 +876,7 @@ export default function RecipePage() {
                     cy="64"
                     r={SCORE_RADIUS}
                     fill="none"
-                    stroke="rgba(45,42,38,0.12)"
+                    stroke="rgba(232, 168, 159, 0.18)"
                     strokeWidth="2"
                   />
                   <motion.circle
@@ -719,16 +895,25 @@ export default function RecipePage() {
                   />
                 </svg>
                 <div className="absolute inset-0 flex items-center justify-center">
-                  <span className="font-serif text-[1.85rem] italic text-charcoal">
+                  <span
+                    className="font-serif text-[1.85rem] italic"
+                    style={{ color: "var(--or-bright)" }}
+                  >
                     {recipe.score_compatibilite}
                   </span>
                 </div>
               </div>
               <div>
-                <p className="text-[0.62rem] uppercase tracking-[0.32em] text-mute">
+                <p
+                  className="text-[0.62rem] uppercase tracking-[0.32em]"
+                  style={{ color: "var(--rose-poudre)" }}
+                >
                   — Score de compatibilité
                 </p>
-                <p className="mt-4 max-w-xs font-serif text-[1.15rem] italic leading-[1.5] text-charcoal">
+                <p
+                  className="mt-4 max-w-xs font-serif text-[1.15rem] italic leading-[1.5]"
+                  style={{ color: "var(--text-primary)" }}
+                >
                   Cette recette correspond à vos ingrédients et préférences.
                 </p>
               </div>
@@ -741,25 +926,32 @@ export default function RecipePage() {
          SECTION 7 — ACTIONS
          ────────────────────────────────────────────────────────────── */}
       <section
-        className="px-8 py-24 text-creme md:py-32"
+        className="px-8 py-24 md:py-32"
         style={{
           background:
-            "linear-gradient(160deg, #1A0A24 0%, #2A1338 100%)",
+            "linear-gradient(160deg, var(--bg-deep) 0%, var(--bg-primary) 100%)",
+          color: "var(--text-primary)",
         }}
       >
         <div className="mx-auto flex max-w-7xl flex-col gap-12">
           <div className="flex items-center justify-between" data-reveal>
-            <p className="text-[0.62rem] uppercase tracking-[0.32em] text-creme/55">
+            <p
+              className="text-[0.62rem] uppercase tracking-[0.32em]"
+              style={{ color: "var(--rose-poudre)" }}
+            >
               — En cuisine
             </p>
-            <p className="text-[0.62rem] uppercase tracking-[0.32em] text-creme/55">
+            <p
+              className="text-[0.62rem] uppercase tracking-[0.32em]"
+              style={{ color: "var(--text-muted)" }}
+            >
               Fin de la recette
             </p>
           </div>
 
           <h2
             data-reveal
-            className="max-w-3xl font-serif italic leading-[0.95] tracking-[-0.02em] text-creme"
+            className="max-w-3xl font-serif italic leading-[0.95] tracking-[-0.02em] text-gradient-gold-rose"
             style={{ fontSize: "clamp(2.25rem, 5vw, 4rem)" }}
           >
             Prêt à passer au feu ?
