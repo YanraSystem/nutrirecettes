@@ -337,7 +337,11 @@ def render_recipe(recipe: dict):
     col_img, col_info = st.columns([1, 2])
 
     with col_img:
-        img_src = recipe.get("image_url") or image_url_for(recipe["nom"], recipe.get("origine", ""))
+        img_src = recipe.get("image_url") or image_url_for(
+            recipe["nom"],
+            recipe.get("origine", ""),
+            recipe.get("nom_image", ""),
+        )
         drapeau = recipe.get('drapeau', '🍽️')
         # background-image CSS : si l'image charge, photo. Si rate, gradient beige avec drapeau.
         # Pas de <img> donc pas de broken icon ni alt text qui depasse.

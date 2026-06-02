@@ -173,14 +173,16 @@ Genere les infos enrichies suivantes en JSON valide uniquement (aucun markdown, 
   "astuce_chef": "Une astuce courte pour reussir le plat",
   "substitutions": {{"ingredient_original": ["substitut 1", "substitut 2"]}},
   "cout_estime_eur": 12.50,
-  "cout_par_personne_eur": 3.10
+  "cout_par_personne_eur": 3.10,
+  "nom_image": "tagine"
 }}
 
 Regles :
 - indicateur_sante : "vert" = equilibre/leger, "orange" = correct mais riche, "rouge" = tres riche
 - niveau_authenticite : "Traditionnel", "Adapte", ou "Fusion"
 - substitutions : 3-4 ingredients principaux avec 1-2 alternatives
-- cout_estime_eur : estimation realiste prix supermarche France 2026"""
+- cout_estime_eur : estimation realiste prix supermarche France 2026
+- nom_image : UN ou DEUX mots en ANGLAIS qui identifient le type de plat (ex: "biryani", "tagine", "pad thai", "carbonara", "ramen", "couscous", "paella", "sushi"). Sert pour chercher une vraie photo de plat."""
 
     try:
         response = client.messages.create(
@@ -243,7 +245,8 @@ Format JSON attendu :
     "ingredient_original_2": ["substitut 1"]
   }},
   "cout_estime_eur": 12.50,
-  "cout_par_personne_eur": 3.10
+  "cout_par_personne_eur": 3.10,
+  "nom_image": "biryani"
 }}
 
 Regles :
@@ -252,7 +255,8 @@ Regles :
 - score_compatibilite : note 0-100 de coherence des ingredients avec la cuisine
 - etapes : minimum 6 etapes detaillees
 - substitutions : pour les 3-4 ingredients principaux, propose 1-2 alternatives accessibles
-- cout_estime_eur : estimation realiste du cout total des ingredients en euros (prix supermarche France 2026), arrondi"""
+- cout_estime_eur : estimation realiste du cout total des ingredients en euros (prix supermarche France 2026), arrondi
+- nom_image : UN ou DEUX mots en ANGLAIS qui identifient le type de plat (ex: "biryani", "tagine", "pad thai", "carbonara", "ramen", "couscous", "paella", "sushi"). Sert pour chercher une vraie photo de plat. Toujours minuscule, sans accent."""
 
     try:
         response = client.messages.create(
