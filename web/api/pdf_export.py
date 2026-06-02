@@ -77,7 +77,7 @@ def build_pdf(recipe: dict, personnes: int, regime: str) -> bytes:
     pdf.ln(8)
     pdf.set_font("Helvetica", "I", 9)
     pdf.set_text_color(150, 150, 150)
-    pdf.cell(0, 5, _clean(f"Genere avec NutriRecettes - Source : {recipe.get('source', 'N/A')}"), **NEXT_LINE)
+    pdf.cell(0, 5, _clean(f"Genere avec Apollon - Source : {recipe.get('source', 'N/A')}"), **NEXT_LINE)
 
     # fpdf2 : .output() retourne un bytearray, on le convertit en bytes pour Streamlit
     return bytes(pdf.output())

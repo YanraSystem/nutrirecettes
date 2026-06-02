@@ -1,5 +1,5 @@
 """
-NutriRecettes API — serverless function Vercel.
+Apollon API — serverless function Vercel.
 
 FastAPI single-file qui wrappe le moteur Python (Claude + Spoonacular).
 Vercel detecte automatiquement l'export `app` comme ASGI handler.
@@ -24,7 +24,7 @@ from recipe_engine import get_recipe  # noqa: E402
 from image_gen import image_url_for  # noqa: E402
 
 app = FastAPI(
-    title="NutriRecettes API",
+    title="Apollon API",
     description="Generation de recettes IA + images Spoonacular.",
     version="1.0.0",
 )
@@ -95,7 +95,7 @@ def get_image(
 @app.get("/api")
 def api_root():
     return {
-        "name": "NutriRecettes API",
+        "name": "Apollon API",
         "version": "1.0.0",
         "endpoints": ["/api/health", "/api/recipe", "/api/image"],
     }
