@@ -1,15 +1,28 @@
 @import "tailwindcss";
 
 :root {
-  /* Editorial palette — NutriRecettes */
+  /* === Palette editoriale enrichie === */
+  /* Neutres */
   --creme: #FAF7F2;
   --creme-warm: #F5F0E6;
-  --terracotta: #C97B5F;
-  --terracotta-dark: #A85A3F;
-  --sage: #8B9A6C;
   --charcoal: #2D2A26;
   --warm-gray: #5C5751;
   --mute: #8B7E70;
+
+  /* Accents principaux */
+  --terracotta: #C97B5F;        /* Proteines, accents chauds, CTA */
+  --terracotta-dark: #A85A3F;
+  --sage: #8B9A6C;              /* Legumes, fraicheur, equilibre */
+  --sage-deep: #5F7050;         /* Sage plus sature, herbes */
+
+  /* === Accents thematiques (cuisine / categorie) === */
+  --safran: #C99A4F;             /* Feculents, Maghreb, doree */
+  --safran-light: #E0BC7B;
+  --paprika: #B85847;            /* Epices, chaleur, Asie */
+  --azur: #4A6B85;               /* Mediterranee, Asie froide, laitiers */
+  --azur-light: #7A98AE;
+  --aubergine: #6E4B5E;          /* Soir, profondeur, vins */
+  --olive: #7E7A4B;              /* Olive, mediterraneen */
 
   --background: var(--creme);
   --foreground: var(--charcoal);
@@ -24,9 +37,19 @@
   --color-terracotta: var(--terracotta);
   --color-terracotta-dark: var(--terracotta-dark);
   --color-sage: var(--sage);
+  --color-sage-deep: var(--sage-deep);
   --color-charcoal: var(--charcoal);
   --color-warm-gray: var(--warm-gray);
   --color-mute: var(--mute);
+
+  /* Accents thematiques */
+  --color-safran: var(--safran);
+  --color-safran-light: var(--safran-light);
+  --color-paprika: var(--paprika);
+  --color-azur: var(--azur);
+  --color-azur-light: var(--azur-light);
+  --color-aubergine: var(--aubergine);
+  --color-olive: var(--olive);
 
   --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
   --font-serif: var(--font-cormorant), "Cormorant Garamond", Georgia, serif;

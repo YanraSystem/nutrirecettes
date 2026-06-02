@@ -98,6 +98,15 @@ const EMOJIS: Record<string, string> = {
   Lait: "🥛", Yaourt: "🍶", Fromage: "🧀", Beurre: "🧈", Crème: "🍦",
 };
 
+// Accent couleur par categorie (CSS vars pour eviter les problemes JIT Tailwind v4)
+const CATEGORY_ACCENT: Record<Category, { color: string; soft: string }> = {
+  "Protéines":       { color: "var(--terracotta)", soft: "rgba(201,123,95,0.4)"  },
+  "Légumes":         { color: "var(--sage-deep)",  soft: "rgba(95,112,80,0.4)"   },
+  "Féculents":       { color: "var(--safran)",     soft: "rgba(201,154,79,0.4)"  },
+  "Herbes & Épices": { color: "var(--paprika)",    soft: "rgba(184,88,71,0.4)"   },
+  "Produits laitiers": { color: "var(--azur)",     soft: "rgba(74,107,133,0.4)"  },
+};
+
 const REGIMES = [
   "Aucun",
   "Végétarien",
@@ -260,25 +269,35 @@ function IngredientPill({
   selected,
   onToggle,
   disabled,
+  accentColor,
 }: {
   label: string;
   selected: boolean;
   onToggle: () => void;
   disabled?: boolean;
+  accentColor?: string;
 }) {
   const emoji = EMOJIS[label] ?? "";
+  const color = accentColor ?? "var(--terracotta)";
   return (
     <motion.button
       type="button"
       onClick={onToggle}
       disabled={disabled}
       whileTap={{ scale: 0.97 }}
+      onMouseEnter={(e) => {
+        if (!selected) e.currentTarget.style.borderColor = color;
+      }}
+      onMouseLeave={(e) => {
+        if (!selected) e.currentTarget.style.borderColor = "rgba(45,42,38,0.1)";
+      }}
       transition={{ type: "spring", stiffness: 500, damping: 28 }}
       className={`group relative w-full overflow-hidden border px-4 py-2.5 text-left text-[0.875rem] transition-all duration-200 ease-out disabled:opacity-50 ${
         selected
-          ? "border-terracotta bg-charcoal text-creme"
-          : "border-charcoal/10 bg-creme text-charcoal hover:-translate-y-px hover:border-terracotta hover:shadow-[0_8px_24px_-16px_rgba(45,42,38,0.4)]"
+          ? "bg-charcoal text-creme hover:-translate-y-px"
+          : "border-charcoal/10 bg-creme text-charcoal hover:-translate-y-px hover:shadow-[0_8px_24px_-16px_rgba(45,42,38,0.4)]"
       }`}
+      style={selected ? { borderColor: color, boxShadow: `0 0 0 1px ${color}` } : undefined}
     >
       <span className="relative z-10 inline-flex items-center gap-2.5">
         {emoji && <span className="text-base leading-none">{emoji}</span>}
@@ -286,7 +305,8 @@ function IngredientPill({
       </span>
       {selected && (
         <span
-          className="absolute right-3 top-1/2 -translate-y-1/2 text-[0.6rem] tracking-[0.2em] text-terracotta"
+          className="absolute right-3 top-1/2 -translate-y-1/2 text-[0.6rem] tracking-[0.2em]"
+          style={{ color }}
           aria-hidden
         >
           ●
@@ -494,28 +514,38 @@ function ComposeInner() {
       {/* Section 3 — Picker d'ingrédients */}
       <section className="mx-auto max-w-7xl px-6 pb-48 pt-16 sm:px-10 sm:pt-20">
         <div className="grid grid-cols-1 gap-x-10 gap-y-14 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5">
-          {CATEGORIES.map((cat) => (
-            <div key={cat}>
-              <div className="mb-6">
-                <h2 className="font-serif text-2xl italic text-terracotta">
-                  {cat}
-                </h2>
-                <span className="mt-2 block h-px w-10 bg-terracotta/40" />
+          {CATEGORIES.map((cat) => {
+            const accent = CATEGORY_ACCENT[cat];
+            return (
+              <div key={cat}>
+                <div className="mb-6">
+                  <h2
+                    className="font-serif text-2xl italic"
+                    style={{ color: accent.color }}
+                  >
+                    {cat}
+                  </h2>
+                  <span
+                    className="mt-2 block h-px w-10"
+                    style={{ background: accent.soft }}
+                  />
+                </div>
+                <ul className="space-y-2.5">
+                  {ALIMENTS[cat].map((item) => (
+                    <li key={item}>
+                      <IngredientPill
+                        label={item}
+                        selected={selected.has(item)}
+                        onToggle={() => toggle(item)}
+                        disabled={submitting}
+                        accentColor={accent.color}
+                      />
+                    </li>
+                  ))}
+                </ul>
               </div>
-              <ul className="space-y-2.5">
-                {ALIMENTS[cat].map((item) => (
-                  <li key={item}>
-                    <IngredientPill
-                      label={item}
-                      selected={selected.has(item)}
-                      onToggle={() => toggle(item)}
-                      disabled={submitting}
-                    />
-                  </li>
-                ))}
-              </ul>
-            </div>
-          ))}
+            );
+          })}
         </div>
 
         {/* Footer note éditorial */}
