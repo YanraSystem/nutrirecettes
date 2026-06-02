@@ -9,9 +9,8 @@ import os
 import urllib.parse
 
 import requests
-from dotenv import load_dotenv
 
-load_dotenv()
+# Note : pas de dotenv en serverless Vercel (env vars injectees directement).
 
 SPOONACULAR_BASE = "https://api.spoonacular.com/recipes/complexSearch"
 _spoonacular_cache: dict[str, str | None] = {}

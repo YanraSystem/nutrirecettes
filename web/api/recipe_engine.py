@@ -9,9 +9,9 @@ import json
 import unicodedata
 import requests
 from anthropic import Anthropic
-from dotenv import load_dotenv
 
-load_dotenv()
+# Note : pas de dotenv en serverless Vercel (env vars injectees directement).
+# En dev local FastAPI, exporter ANTHROPIC_API_KEY dans le shell avant d'uvicorn.
 
 MEALDB_BASE = "https://www.themealdb.com/api/json/v1/1"
 CLAUDE_MODEL = "claude-haiku-4-5-20251001"
