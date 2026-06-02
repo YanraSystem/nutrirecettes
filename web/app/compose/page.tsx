@@ -669,12 +669,39 @@ function ComposeInner() {
       </section>
 
       {/* Section 3 — Picker d'ingrédients */}
-      <section className="relative z-10 mx-auto max-w-7xl px-6 pb-48 pt-16 sm:px-10 sm:pt-20">
-        <div className="grid grid-cols-1 gap-x-10 gap-y-14 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5">
+      <section className="relative z-10 mx-auto max-w-7xl pb-48 pt-16 sm:px-10 sm:pt-20">
+        {/* Indicateur catégories mobile — bullets en haut */}
+        <div className="mb-6 flex items-center justify-center gap-2 px-6 sm:hidden">
           {CATEGORIES.map((cat) => {
             const accent = CATEGORY_ACCENT[cat];
             return (
-              <div key={cat}>
+              <span
+                key={cat}
+                className="inline-block h-1 w-8 rounded-full"
+                style={{ background: accent.color, opacity: 0.5 }}
+              />
+            );
+          })}
+        </div>
+        <p
+          className="mb-4 text-center text-[0.6rem] uppercase tracking-[0.32em] sm:hidden"
+          style={{ color: "var(--text-secondary)" }}
+        >
+          ← Faites glisser entre catégories →
+        </p>
+
+        {/* Container : grille desktop / swiper horizontal mobile */}
+        <div
+          className="flex snap-x snap-mandatory gap-6 overflow-x-auto px-6 pb-2 sm:grid sm:snap-none sm:grid-cols-2 sm:gap-x-10 sm:gap-y-14 sm:overflow-visible sm:px-0 sm:pb-0 lg:grid-cols-3 xl:grid-cols-5"
+          style={{ scrollbarWidth: "none" }}
+        >
+          {CATEGORIES.map((cat) => {
+            const accent = CATEGORY_ACCENT[cat];
+            return (
+              <div
+                key={cat}
+                className="w-[85vw] shrink-0 snap-center sm:w-auto sm:shrink"
+              >
                 <div className="mb-6">
                   <h2
                     className="font-serif text-2xl italic"
@@ -759,8 +786,8 @@ function ComposeInner() {
                 </div>
               </div>
 
-              {/* Pills horizontalement scrollables */}
-              <div className="min-w-0 flex-1 overflow-x-auto">
+              {/* Pills horizontalement scrollables — cachees sur mobile */}
+              <div className="hidden min-w-0 flex-1 overflow-x-auto lg:block">
                 <ul className="flex items-center gap-2 whitespace-nowrap">
                   {selectedList.map((item) => (
                     <li
