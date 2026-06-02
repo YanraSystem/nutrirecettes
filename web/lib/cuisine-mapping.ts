@@ -39,6 +39,7 @@ const COUNTRY_TO_CUISINE: Record<string, CuisineLabel> = {
   liban: "Orientale",
   // Afrique du Nord & Afrique
   maroc: "Africaine",
+  algerie: "Africaine",
   tunisie: "Africaine",
   egypte: "Africaine",
   kenya: "Africaine",

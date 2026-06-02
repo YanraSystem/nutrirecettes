@@ -29,6 +29,7 @@ const CUISINES: ReadonlyArray<Cuisine> = [
   { id: "inde", name: "Inde", flag: "🇮🇳", lat: 20.5, lon: 78.9 },
   { id: "coree", name: "Corée", flag: "🇰🇷", lat: 35.9, lon: 127.7 },
   { id: "maroc", name: "Maroc", flag: "🇲🇦", lat: 31.7, lon: -7.0 },
+  { id: "algerie", name: "Algérie", flag: "🇩🇿", lat: 28.0, lon: 3.0 },
   { id: "tunisie", name: "Tunisie", flag: "🇹🇳", lat: 33.8, lon: 9.5 },
   { id: "turquie", name: "Turquie", flag: "🇹🇷", lat: 38.9, lon: 35.2 },
   { id: "liban", name: "Liban", flag: "🇱🇧", lat: 33.8, lon: 35.8 },

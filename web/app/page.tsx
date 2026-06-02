@@ -40,7 +40,7 @@ export default function Home() {
             cuisine.
           </h1>
           <p className="mt-10 max-w-md font-sans text-[0.95rem] leading-[1.7] text-creme/75">
-            Dix-huit cuisines du monde, accessibles d'un geste. Faites tourner
+            Dix-neuf cuisines du monde, accessibles d'un geste. Faites tourner
             la planète, posez le doigt sur un pays — la recette suit.
           </p>
 
