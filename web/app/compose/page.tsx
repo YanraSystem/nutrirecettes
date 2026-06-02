@@ -98,13 +98,13 @@ const EMOJIS: Record<string, string> = {
   Lait: "🥛", Yaourt: "🍶", Fromage: "🧀", Beurre: "🧈", Crème: "🍦",
 };
 
-// Accent couleur par categorie (CSS vars pour eviter les problemes JIT Tailwind v4)
+// Accent couleur par categorie — palette night gastronomique
 const CATEGORY_ACCENT: Record<Category, { color: string; soft: string }> = {
-  "Protéines":       { color: "var(--terracotta)", soft: "rgba(201,123,95,0.4)"  },
-  "Légumes":         { color: "var(--sage-deep)",  soft: "rgba(95,112,80,0.4)"   },
-  "Féculents":       { color: "var(--safran)",     soft: "rgba(201,154,79,0.4)"  },
-  "Herbes & Épices": { color: "var(--paprika)",    soft: "rgba(184,88,71,0.4)"   },
-  "Produits laitiers": { color: "var(--azur)",     soft: "rgba(74,107,133,0.4)"  },
+  "Protéines":         { color: "var(--coral)",       soft: "rgba(216,130,107,0.4)" },
+  "Légumes":           { color: "var(--success)",     soft: "rgba(136,194,111,0.4)" },
+  "Féculents":         { color: "var(--or-doux)",     soft: "rgba(212,165,116,0.4)" },
+  "Herbes & Épices":   { color: "var(--rose-poudre)", soft: "rgba(232,168,159,0.4)" },
+  "Produits laitiers": { color: "var(--or-bright)",   soft: "rgba(232,192,136,0.4)" },
 };
 
 const REGIMES = [
@@ -149,21 +149,35 @@ function EditorialSelect<T extends string>({
 
   return (
     <div ref={ref} className="relative">
-      <span className="block text-[0.6rem] font-medium uppercase tracking-[0.28em] text-terracotta">
+      <span
+        className="block text-[0.6rem] font-medium uppercase tracking-[0.28em]"
+        style={{ color: "var(--rose-poudre)" }}
+      >
         {label}
       </span>
-      <div className="mt-2 border-b border-terracotta/30 pb-2">
+      <div
+        className="mt-2 pb-2"
+        style={{ borderBottom: "1px solid rgba(232, 168, 159, 0.35)" }}
+      >
         <button
           type="button"
           disabled={disabled}
           onClick={() => setOpen((o) => !o)}
-          className="flex w-full items-center justify-between gap-3 text-left font-serif text-2xl italic text-charcoal transition-colors hover:text-terracotta disabled:opacity-40"
+          className="flex w-full items-center justify-between gap-3 text-left font-serif text-2xl italic transition-colors disabled:opacity-40"
+          style={{ color: "var(--text-primary)" }}
+          onMouseEnter={(e) => {
+            if (!disabled) e.currentTarget.style.color = "var(--or-bright)";
+          }}
+          onMouseLeave={(e) => {
+            e.currentTarget.style.color = "var(--text-primary)";
+          }}
         >
           <span>{value}</span>
           <span
-            className={`text-xs text-warm-gray transition-transform duration-300 ${
+            className={`text-xs transition-transform duration-300 ${
               open ? "rotate-180" : ""
             }`}
+            style={{ color: "var(--text-secondary)" }}
             aria-hidden
           >
             ▾
@@ -178,7 +192,13 @@ function EditorialSelect<T extends string>({
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -6 }}
             transition={{ duration: 0.18, ease: [0.25, 0, 0, 1] }}
-            className="absolute left-0 right-0 top-full z-40 mt-2 border border-charcoal/10 bg-creme py-2 shadow-[0_24px_60px_-24px_rgba(45,42,38,0.35)]"
+            className="absolute left-0 right-0 top-full z-40 mt-2 py-2"
+            style={{
+              background: "var(--bg-elevated)",
+              border: "1px solid rgba(232, 168, 159, 0.18)",
+              boxShadow:
+                "0 24px 60px -20px rgba(0,0,0,0.6), 0 0 40px -20px rgba(139,58,106,0.3)",
+            }}
           >
             {options.map((opt) => {
               const active = opt === value;
@@ -190,11 +210,25 @@ function EditorialSelect<T extends string>({
                       onChange(opt);
                       setOpen(false);
                     }}
-                    className={`flex w-full items-center justify-between px-4 py-2 font-serif text-base italic transition-colors ${
-                      active
-                        ? "text-terracotta"
-                        : "text-charcoal hover:bg-creme-warm hover:text-terracotta"
-                    }`}
+                    className="flex w-full items-center justify-between px-4 py-2 font-serif text-base italic transition-colors"
+                    style={{
+                      color: active
+                        ? "var(--or-bright)"
+                        : "var(--text-primary)",
+                      background: "transparent",
+                    }}
+                    onMouseEnter={(e) => {
+                      if (!active) {
+                        e.currentTarget.style.background = "var(--bg-surface)";
+                        e.currentTarget.style.color = "var(--rose-bright)";
+                      }
+                    }}
+                    onMouseLeave={(e) => {
+                      if (!active) {
+                        e.currentTarget.style.background = "transparent";
+                        e.currentTarget.style.color = "var(--text-primary)";
+                      }
+                    }}
                   >
                     <span>{opt}</span>
                     {active && (
@@ -230,20 +264,44 @@ function PersonStepper({
   const inc = () => onChange(Math.min(12, value + 1));
   return (
     <div>
-      <span className="block text-[0.6rem] font-medium uppercase tracking-[0.28em] text-terracotta">
+      <span
+        className="block text-[0.6rem] font-medium uppercase tracking-[0.28em]"
+        style={{ color: "var(--rose-poudre)" }}
+      >
         Personnes
       </span>
-      <div className="mt-2 flex items-center justify-between border-b border-terracotta/30 pb-2">
+      <div
+        className="mt-2 flex items-center justify-between pb-2"
+        style={{ borderBottom: "1px solid rgba(232, 168, 159, 0.35)" }}
+      >
         <button
           type="button"
           onClick={dec}
           disabled={disabled || value <= 1}
           aria-label="Diminuer le nombre de personnes"
-          className="flex h-9 w-9 items-center justify-center border border-charcoal/20 text-base text-charcoal transition-all hover:border-terracotta hover:text-terracotta disabled:opacity-30"
+          className="flex h-9 w-9 items-center justify-center text-base transition-all disabled:opacity-30"
+          style={{
+            border: "1px solid rgba(248, 242, 234, 0.18)",
+            color: "var(--text-primary)",
+            background: "transparent",
+          }}
+          onMouseEnter={(e) => {
+            if (!(disabled || value <= 1)) {
+              e.currentTarget.style.borderColor = "var(--or-doux)";
+              e.currentTarget.style.color = "var(--or-bright)";
+            }
+          }}
+          onMouseLeave={(e) => {
+            e.currentTarget.style.borderColor = "rgba(248, 242, 234, 0.18)";
+            e.currentTarget.style.color = "var(--text-primary)";
+          }}
         >
           −
         </button>
-        <span className="font-serif text-3xl italic text-charcoal tabular-nums">
+        <span
+          className="font-serif text-3xl italic tabular-nums"
+          style={{ color: "var(--text-primary)" }}
+        >
           {value}
         </span>
         <button
@@ -251,7 +309,22 @@ function PersonStepper({
           onClick={inc}
           disabled={disabled || value >= 12}
           aria-label="Augmenter le nombre de personnes"
-          className="flex h-9 w-9 items-center justify-center border border-charcoal/20 text-base text-charcoal transition-all hover:border-terracotta hover:text-terracotta disabled:opacity-30"
+          className="flex h-9 w-9 items-center justify-center text-base transition-all disabled:opacity-30"
+          style={{
+            border: "1px solid rgba(248, 242, 234, 0.18)",
+            color: "var(--text-primary)",
+            background: "transparent",
+          }}
+          onMouseEnter={(e) => {
+            if (!(disabled || value >= 12)) {
+              e.currentTarget.style.borderColor = "var(--or-doux)";
+              e.currentTarget.style.color = "var(--or-bright)";
+            }
+          }}
+          onMouseLeave={(e) => {
+            e.currentTarget.style.borderColor = "rgba(248, 242, 234, 0.18)";
+            e.currentTarget.style.color = "var(--text-primary)";
+          }}
         >
           +
         </button>
@@ -278,7 +351,7 @@ function IngredientPill({
   accentColor?: string;
 }) {
   const emoji = EMOJIS[label] ?? "";
-  const color = accentColor ?? "var(--terracotta)";
+  const color = accentColor ?? "var(--or-doux)";
   return (
     <motion.button
       type="button"
@@ -286,18 +359,38 @@ function IngredientPill({
       disabled={disabled}
       whileTap={{ scale: 0.97 }}
       onMouseEnter={(e) => {
-        if (!selected) e.currentTarget.style.borderColor = color;
+        if (!selected) {
+          e.currentTarget.style.borderColor = color;
+          e.currentTarget.style.background = "var(--bg-surface)";
+        }
       }}
       onMouseLeave={(e) => {
-        if (!selected) e.currentTarget.style.borderColor = "rgba(45,42,38,0.1)";
+        if (!selected) {
+          e.currentTarget.style.borderColor = "rgba(232, 168, 159, 0.15)";
+          e.currentTarget.style.background = "var(--bg-elevated)";
+        }
       }}
       transition={{ type: "spring", stiffness: 500, damping: 28 }}
-      className={`group relative w-full overflow-hidden border px-4 py-2.5 text-left text-[0.875rem] transition-all duration-200 ease-out disabled:opacity-50 ${
+      className="group relative w-full overflow-hidden px-4 py-2.5 text-left text-[0.875rem] transition-all duration-200 ease-out disabled:opacity-50 hover:-translate-y-px"
+      style={
         selected
-          ? "bg-charcoal text-creme hover:-translate-y-px"
-          : "border-charcoal/10 bg-creme text-charcoal hover:-translate-y-px hover:shadow-[0_8px_24px_-16px_rgba(45,42,38,0.4)]"
-      }`}
-      style={selected ? { borderColor: color, boxShadow: `0 0 0 1px ${color}` } : undefined}
+          ? {
+              borderWidth: "1px",
+              borderStyle: "solid",
+              borderColor: color,
+              background: color,
+              color: "var(--bg-deep)",
+              boxShadow: `0 0 0 1px ${color}, 0 8px 24px -16px ${color}`,
+              fontWeight: 500,
+            }
+          : {
+              borderWidth: "1px",
+              borderStyle: "solid",
+              borderColor: "rgba(232, 168, 159, 0.15)",
+              background: "var(--bg-elevated)",
+              color: "var(--text-primary)",
+            }
+      }
     >
       <span className="relative z-10 inline-flex items-center gap-2.5">
         {emoji && <span className="text-base leading-none">{emoji}</span>}
@@ -306,7 +399,7 @@ function IngredientPill({
       {selected && (
         <span
           className="absolute right-3 top-1/2 -translate-y-1/2 text-[0.6rem] tracking-[0.2em]"
-          style={{ color }}
+          style={{ color: "var(--bg-deep)" }}
           aria-hidden
         >
           ●
@@ -434,24 +527,49 @@ function ComposeInner() {
 
   const balanceColor =
     balance.status === "ok"
-      ? "bg-sage"
+      ? "var(--success)"
       : balance.status === "warn"
-        ? "bg-terracotta"
-        : "bg-terracotta-dark";
+        ? "var(--warning)"
+        : "var(--danger)";
 
   return (
-    <main className="relative min-h-screen bg-creme text-charcoal">
+    <main
+      className="relative min-h-screen"
+      style={{
+        background:
+          "linear-gradient(180deg, #1A0A24 0%, #2A1338 100%)",
+        color: "var(--text-primary)",
+      }}
+    >
+      {/* Glow magenta radial discret */}
+      <div
+        className="pointer-events-none absolute inset-x-0 top-0 h-[60vh] z-0"
+        style={{
+          background:
+            "radial-gradient(ellipse 60% 50% at 70% 0%, rgba(139,58,106,0.22) 0%, rgba(139,58,106,0) 70%)",
+        }}
+      />
+
       {/* Section 1 — Header de page */}
-      <section className="mx-auto max-w-7xl px-6 pt-16 sm:px-10 lg:pt-24">
+      <section className="relative z-10 mx-auto max-w-7xl px-6 pt-16 sm:px-10 lg:pt-24">
         <div className="flex items-start justify-between gap-6">
           <div>
-            <p className="text-[0.65rem] font-medium uppercase tracking-[0.32em] text-terracotta">
+            <p
+              className="text-[0.65rem] font-medium uppercase tracking-[0.32em]"
+              style={{ color: "var(--rose-poudre)" }}
+            >
               — Étape 1
             </p>
-            <h1 className="mt-6 font-serif text-[clamp(3rem,7vw,6rem)] italic leading-[0.95] tracking-[-0.03em] text-charcoal">
-              Composez votre carte
+            <h1
+              className="mt-6 font-serif text-[clamp(3rem,7vw,6rem)] italic leading-[0.95] tracking-[-0.03em]"
+            >
+              <span style={{ color: "var(--text-primary)" }}>Composez </span>
+              <span className="text-gradient-gold-rose">votre carte</span>
             </h1>
-            <p className="mt-8 max-w-2xl font-serif text-[clamp(1.05rem,1.4vw,1.35rem)] italic leading-[1.55] text-warm-gray">
+            <p
+              className="mt-8 max-w-2xl font-serif text-[clamp(1.05rem,1.4vw,1.35rem)] italic leading-[1.55]"
+              style={{ color: "var(--text-secondary)" }}
+            >
               Sélectionnez les ingrédients à votre disposition. La cuisine du
               monde s'invitera ensuite à votre table.
             </p>
@@ -460,7 +578,21 @@ function ComposeInner() {
           <button
             type="button"
             onClick={() => router.push("/")}
-            className="hidden shrink-0 self-start border border-charcoal/20 px-5 py-2.5 text-[0.6rem] font-medium uppercase tracking-[0.28em] text-charcoal transition-all hover:border-terracotta hover:text-terracotta sm:inline-flex"
+            className="hidden shrink-0 self-start px-5 py-2.5 text-[0.6rem] font-medium uppercase tracking-[0.28em] transition-all sm:inline-flex"
+            style={{
+              border: "1px solid rgba(232, 168, 159, 0.3)",
+              color: "var(--text-primary)",
+              background: "transparent",
+            }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.borderColor = "var(--or-doux)";
+              e.currentTarget.style.color = "var(--or-bright)";
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.borderColor =
+                "rgba(232, 168, 159, 0.3)";
+              e.currentTarget.style.color = "var(--text-primary)";
+            }}
           >
             ← Retour
           </button>
@@ -468,7 +600,14 @@ function ComposeInner() {
       </section>
 
       {/* Section 2 — Préférences (bandeau sticky) */}
-      <section className="sticky top-0 z-30 mt-16 border-y border-charcoal/10 bg-creme/95 backdrop-blur-md">
+      <section
+        className="sticky top-0 z-30 mt-16 backdrop-blur-md"
+        style={{
+          background: "rgba(26, 10, 36, 0.92)",
+          borderTop: "1px solid rgba(232, 168, 159, 0.12)",
+          borderBottom: "1px solid rgba(232, 168, 159, 0.12)",
+        }}
+      >
         <div className="mx-auto max-w-7xl px-6 py-6 sm:px-10">
           <div className="grid grid-cols-1 gap-x-10 gap-y-6 sm:grid-cols-2 lg:grid-cols-4">
             <EditorialSelect<CuisineLabel>
@@ -491,18 +630,35 @@ function ComposeInner() {
               disabled={submitting}
             />
             <div>
-              <span className="block text-[0.6rem] font-medium uppercase tracking-[0.28em] text-terracotta">
+              <span
+                className="block text-[0.6rem] font-medium uppercase tracking-[0.28em]"
+                style={{ color: "var(--rose-poudre)" }}
+              >
                 Inspiration
               </span>
-              <div className="mt-2 border-b border-terracotta/30 pb-2">
+              <div
+                className="mt-2 pb-2"
+                style={{ borderBottom: "1px solid rgba(232, 168, 159, 0.35)" }}
+              >
                 <button
                   type="button"
                   onClick={drawRandom}
                   disabled={submitting}
-                  className="group flex w-full items-center justify-between font-serif text-2xl italic text-charcoal transition-colors hover:text-terracotta disabled:opacity-40"
+                  className="group flex w-full items-center justify-between font-serif text-2xl italic transition-colors disabled:opacity-40"
+                  style={{ color: "var(--text-primary)" }}
+                  onMouseEnter={(e) => {
+                    if (!submitting)
+                      e.currentTarget.style.color = "var(--or-bright)";
+                  }}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.color = "var(--text-primary)";
+                  }}
                 >
                   <span>Tirer au sort</span>
-                  <span className="text-[0.6rem] uppercase tracking-[0.28em] text-warm-gray transition-transform group-hover:translate-x-1">
+                  <span
+                    className="text-[0.6rem] uppercase tracking-[0.28em] transition-transform group-hover:translate-x-1"
+                    style={{ color: "var(--text-secondary)" }}
+                  >
                     →
                   </span>
                 </button>
@@ -513,7 +669,7 @@ function ComposeInner() {
       </section>
 
       {/* Section 3 — Picker d'ingrédients */}
-      <section className="mx-auto max-w-7xl px-6 pb-48 pt-16 sm:px-10 sm:pt-20">
+      <section className="relative z-10 mx-auto max-w-7xl px-6 pb-48 pt-16 sm:px-10 sm:pt-20">
         <div className="grid grid-cols-1 gap-x-10 gap-y-14 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5">
           {CATEGORIES.map((cat) => {
             const accent = CATEGORY_ACCENT[cat];
@@ -550,7 +706,10 @@ function ComposeInner() {
         </div>
 
         {/* Footer note éditorial */}
-        <p className="mt-24 max-w-xl font-serif text-base italic text-mute">
+        <p
+          className="mt-24 max-w-xl font-serif text-base italic"
+          style={{ color: "var(--text-muted)" }}
+        >
           — Cochez ce que vous avez dans le frigo. Les manques sont rarement
           des obstacles, plus souvent des prétextes à l'invention.
         </p>
@@ -564,21 +723,37 @@ function ComposeInner() {
             animate={{ y: 0, opacity: 1 }}
             exit={{ y: 120, opacity: 0 }}
             transition={{ duration: 0.4, ease: [0.25, 0, 0, 1] }}
-            className="fixed inset-x-0 bottom-0 z-50 border-t border-charcoal/10 bg-creme/95 backdrop-blur-md"
+            className="fixed inset-x-0 bottom-0 z-50 backdrop-blur-md"
+            style={{
+              background: "rgba(26, 10, 36, 0.95)",
+              borderTop: "1px solid rgba(232, 168, 159, 0.18)",
+              boxShadow:
+                "0 -20px 60px -20px rgba(139,58,106,0.35)",
+            }}
           >
             <div className="mx-auto flex max-w-7xl flex-col gap-4 px-6 py-5 sm:px-10 lg:flex-row lg:items-center lg:gap-8">
               {/* Compteur + équilibre */}
               <div className="flex items-center gap-4 lg:shrink-0">
                 <span
                   aria-hidden
-                  className={`inline-block h-2.5 w-2.5 rounded-full ${balanceColor}`}
+                  className="inline-block h-2.5 w-2.5 rounded-full"
+                  style={{
+                    background: balanceColor,
+                    boxShadow: `0 0 12px ${balanceColor}`,
+                  }}
                 />
                 <div>
-                  <p className="font-serif text-xl italic text-charcoal">
+                  <p
+                    className="font-serif text-xl italic"
+                    style={{ color: "var(--text-primary)" }}
+                  >
                     {selected.size} ingrédient{selected.size > 1 ? "s" : ""}{" "}
                     sélectionné{selected.size > 1 ? "s" : ""}
                   </p>
-                  <p className="text-[0.65rem] uppercase tracking-[0.28em] text-mute">
+                  <p
+                    className="text-[0.65rem] uppercase tracking-[0.28em]"
+                    style={{ color: "var(--text-secondary)" }}
+                  >
                     {balance.label}
                   </p>
                 </div>
@@ -590,14 +765,27 @@ function ComposeInner() {
                   {selectedList.map((item) => (
                     <li
                       key={item}
-                      className="flex items-center gap-2 border border-charcoal/15 bg-creme-warm px-3 py-1.5 text-[0.75rem] text-charcoal"
+                      className="flex items-center gap-2 px-3 py-1.5 text-[0.75rem]"
+                      style={{
+                        border: "1px solid rgba(232, 168, 159, 0.25)",
+                        background: "var(--bg-elevated)",
+                        color: "var(--text-primary)",
+                      }}
                     >
                       <span>{item}</span>
                       <button
                         type="button"
                         onClick={() => toggle(item)}
                         aria-label={`Retirer ${item}`}
-                        className="text-mute transition-colors hover:text-terracotta"
+                        className="transition-colors"
+                        style={{ color: "var(--text-secondary)" }}
+                        onMouseEnter={(e) => {
+                          e.currentTarget.style.color = "var(--rose-bright)";
+                        }}
+                        onMouseLeave={(e) => {
+                          e.currentTarget.style.color =
+                            "var(--text-secondary)";
+                        }}
                       >
                         ×
                       </button>
@@ -606,18 +794,41 @@ function ComposeInner() {
                 </ul>
               </div>
 
-              {/* CTA */}
+              {/* CTA — bouton or brillant */}
               <button
                 type="button"
                 onClick={submit}
                 disabled={submitting || selected.size === 0}
-                className="group relative inline-flex shrink-0 items-center justify-center gap-3 bg-charcoal px-8 py-4 text-[0.7rem] font-medium uppercase tracking-[0.28em] text-creme transition-all duration-300 hover:bg-terracotta disabled:cursor-not-allowed disabled:opacity-60"
+                className="group relative inline-flex shrink-0 items-center justify-center gap-3 px-8 py-4 text-[0.7rem] font-semibold uppercase tracking-[0.28em] transition-all duration-300 disabled:cursor-not-allowed disabled:opacity-60"
+                style={{
+                  background:
+                    "linear-gradient(135deg, var(--or-bright) 0%, var(--or-doux) 100%)",
+                  color: "var(--bg-deep)",
+                  boxShadow:
+                    "0 12px 30px -10px rgba(212, 165, 116, 0.5), 0 0 0 1px rgba(232, 192, 136, 0.4)",
+                }}
+                onMouseEnter={(e) => {
+                  if (!(submitting || selected.size === 0)) {
+                    e.currentTarget.style.transform = "translateY(-2px)";
+                    e.currentTarget.style.boxShadow =
+                      "0 18px 40px -10px rgba(232, 168, 159, 0.6), 0 0 0 1px rgba(232, 192, 136, 0.6)";
+                  }
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.transform = "translateY(0)";
+                  e.currentTarget.style.boxShadow =
+                    "0 12px 30px -10px rgba(212, 165, 116, 0.5), 0 0 0 1px rgba(232, 192, 136, 0.4)";
+                }}
               >
                 {submitting ? (
                   <>
                     <span
                       aria-hidden
-                      className="h-3 w-3 animate-spin rounded-full border border-creme/40 border-t-creme"
+                      className="h-3 w-3 animate-spin rounded-full"
+                      style={{
+                        border: "1px solid rgba(26, 10, 36, 0.3)",
+                        borderTopColor: "var(--bg-deep)",
+                      }}
                     />
                     <span className="font-serif text-sm italic normal-case tracking-normal">
                       Composition en cours…
@@ -641,7 +852,12 @@ function ComposeInner() {
                   initial={{ opacity: 0, y: 10 }}
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0 }}
-                  className="mx-auto max-w-7xl border-t border-terracotta/30 bg-terracotta/5 px-6 py-3 font-serif text-sm italic text-terracotta-dark sm:px-10"
+                  className="mx-auto max-w-7xl px-6 py-3 font-serif text-sm italic sm:px-10"
+                  style={{
+                    borderTop: "1px solid rgba(216, 122, 107, 0.4)",
+                    background: "rgba(216, 122, 107, 0.08)",
+                    color: "var(--danger)",
+                  }}
                   role="status"
                 >
                   — {error}. La table attendra.
@@ -661,11 +877,22 @@ function ComposeInner() {
 
 function ComposeFallback() {
   return (
-    <main className="min-h-screen bg-creme px-8 py-24 text-charcoal">
-      <p className="text-[0.65rem] font-medium uppercase tracking-[0.32em] text-terracotta">
+    <main
+      className="min-h-screen px-8 py-24"
+      style={{
+        background: "var(--bg-primary)",
+        color: "var(--text-primary)",
+      }}
+    >
+      <p
+        className="text-[0.65rem] font-medium uppercase tracking-[0.32em]"
+        style={{ color: "var(--rose-poudre)" }}
+      >
         — Étape 1
       </p>
-      <h1 className="mt-6 font-serif text-6xl italic">Composez votre carte</h1>
+      <h1 className="mt-6 font-serif text-6xl italic text-gradient-gold-rose">
+        Composez votre carte
+      </h1>
     </main>
   );
 }

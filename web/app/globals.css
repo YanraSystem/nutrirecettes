@@ -1,37 +1,90 @@
 @import "tailwindcss";
 
 :root {
-  /* === Palette editoriale enrichie === */
-  /* Neutres */
-  --creme: #FAF7F2;
-  --creme-warm: #F5F0E6;
-  --charcoal: #2D2A26;
-  --warm-gray: #5C5751;
-  --mute: #8B7E70;
+  /* ===================================================================
+   * NOUVELLE PALETTE — Night gastronomique aubergine / or / rose poudre
+   * =================================================================== */
 
-  /* Accents principaux */
-  --terracotta: #C97B5F;        /* Proteines, accents chauds, CTA */
-  --terracotta-dark: #A85A3F;
-  --sage: #8B9A6C;              /* Legumes, fraicheur, equilibre */
-  --sage-deep: #5F7050;         /* Sage plus sature, herbes */
+  /* Backgrounds sombres premium */
+  --bg-deep: #1A0A24;          /* aubergine tres fonce, le plus profond */
+  --bg-primary: #2A1338;       /* aubergine principal (body background) */
+  --bg-elevated: #3A2050;      /* surface elevee (cards) */
+  --bg-surface: #4A2D5C;       /* surface au hover */
 
-  /* === Accents thematiques (cuisine / categorie) === */
-  --safran: #C99A4F;             /* Feculents, Maghreb, doree */
-  --safran-light: #E0BC7B;
-  --paprika: #B85847;            /* Epices, chaleur, Asie */
-  --azur: #4A6B85;               /* Mediterranee, Asie froide, laitiers */
-  --azur-light: #7A98AE;
-  --aubergine: #6E4B5E;          /* Soir, profondeur, vins */
-  --olive: #7E7A4B;              /* Olive, mediterraneen */
+  /* Accents chaleureux */
+  --rose-poudre: #E8A89F;      /* rose poudre principal */
+  --rose-bright: #F4B5A6;      /* rose vif */
+  --coral: #D8826B;            /* corail */
+  --or-doux: #D4A574;          /* or chaud */
+  --or-bright: #E8C088;        /* or brillant pour accents */
+  --magenta: #8B3A6A;          /* magenta pourpre */
+  --violet-glow: #6B2D5C;      /* violet pour glows */
 
-  --background: var(--creme);
-  --foreground: var(--charcoal);
+  /* Texte */
+  --text-primary: #F8F2EA;     /* creme, texte principal sur fond sombre */
+  --text-secondary: #D4C5B9;   /* gris rose pour caption */
+  --text-muted: #8E7E78;       /* texte discret */
+
+  /* Etats / utilitaires */
+  --success: #88C26F;
+  --warning: #E8B57A;
+  --danger: #D87A6B;
+
+  /* ===================================================================
+   * LEGACY (conserve pour ne pas tout casser dans les pages claires)
+   * Les pages "lisibilite-prioritaire" (recipe lecture, carnet) gardent
+   * un fond clair en utilisant ces tokens, retapes sur la nouvelle DA.
+   * =================================================================== */
+  --creme: #F8F2EA;             /* aligne avec --text-primary */
+  --creme-warm: #EFE3D3;        /* legerement plus chaud, pour sections alternees */
+  --charcoal: #1A0A24;          /* devient aubergine profond pour le texte */
+  --warm-gray: #5A4858;         /* gris violace pour caption sur clair */
+  --mute: #8E7E78;
+
+  --terracotta: #D8826B;        /* devient corail (proche, plus chaud) */
+  --terracotta-dark: #B8604F;
+  --sage: #88C26F;
+  --sage-deep: #6FA85A;
+
+  --safran: #D4A574;            /* devient or doux */
+  --safran-light: #E8C088;
+  --paprika: #B8604F;
+  --azur: #6B5A85;              /* recalibre violet froid */
+  --azur-light: #9A8BAE;
+  --aubergine: #6B2D5C;
+  --olive: #8E8B5C;
+
+  --background: var(--bg-primary);
+  --foreground: var(--text-primary);
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
 
+  /* Nouvelle palette exposee a Tailwind */
+  --color-bg-deep: var(--bg-deep);
+  --color-bg-primary: var(--bg-primary);
+  --color-bg-elevated: var(--bg-elevated);
+  --color-bg-surface: var(--bg-surface);
+
+  --color-rose-poudre: var(--rose-poudre);
+  --color-rose-bright: var(--rose-bright);
+  --color-coral: var(--coral);
+  --color-or-doux: var(--or-doux);
+  --color-or-bright: var(--or-bright);
+  --color-magenta: var(--magenta);
+  --color-violet-glow: var(--violet-glow);
+
+  --color-text-primary: var(--text-primary);
+  --color-text-secondary: var(--text-secondary);
+  --color-text-muted: var(--text-muted);
+
+  --color-success: var(--success);
+  --color-warning: var(--warning);
+  --color-danger: var(--danger);
+
+  /* Legacy mapping */
   --color-creme: var(--creme);
   --color-creme-warm: var(--creme-warm);
   --color-terracotta: var(--terracotta);
@@ -42,7 +95,6 @@
   --color-warm-gray: var(--warm-gray);
   --color-mute: var(--mute);
 
-  /* Accents thematiques */
   --color-safran: var(--safran);
   --color-safran-light: var(--safran-light);
   --color-paprika: var(--paprika);
@@ -63,8 +115,8 @@ html,
 body {
   margin: 0;
   padding: 0;
-  background: var(--background);
-  color: var(--foreground);
+  background: var(--bg-primary);
+  color: var(--text-primary);
   font-family: var(--font-sans);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -88,6 +140,45 @@ a {
 }
 
 ::selection {
-  background: var(--terracotta);
-  color: var(--creme);
+  background: var(--or-doux);
+  color: var(--bg-deep);
+}
+
+/* ===================================================================
+ * Utilitaires premium
+ * =================================================================== */
+
+/* Gradient or -> rose : signature des gros titres (fond sombre) */
+.text-gradient-gold-rose {
+  background: linear-gradient(135deg, #F4B5A6 0%, #E8A89F 35%, #D4A574 70%, #E8C088 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: transparent;
+}
+
+/* Variante sature pour fonds clairs */
+.text-gradient-gold-rose-deep {
+  background: linear-gradient(135deg, #C7604E 0%, #B85543 30%, #A87045 65%, #8B5828 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: transparent;
+}
+
+/* Glow magenta/violet pour profondeur */
+.glow-magenta {
+  box-shadow:
+    0 0 60px rgba(139, 58, 106, 0.25),
+    0 0 120px rgba(107, 45, 92, 0.15);
+}
+
+/* Texture noise tres subtile sur fond sombre */
+.noise-overlay::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0.08;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2'/%3E%3CfeColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.06 0'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)'/%3E%3C/svg%3E");
 }

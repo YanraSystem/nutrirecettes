@@ -101,9 +101,9 @@ const MOCK_RECIPE: Recipe = {
 const API_URL = process.env.NEXT_PUBLIC_API_URL ?? "";
 
 const indicatorColor: Record<Recipe["indicateur_sante"], string> = {
-  vert: "#8B9A6C",
-  orange: "#C97B5F",
-  rouge: "#A85A3F",
+  vert: "#88C26F",
+  orange: "#E8A89F",
+  rouge: "#D87A6B",
 };
 
 const AJR = {
@@ -308,7 +308,8 @@ export default function RecipePage() {
          ────────────────────────────────────────────────────────────── */}
       <section
         data-section="hero"
-        className="relative flex h-[100svh] min-h-[640px] w-full items-end overflow-hidden bg-charcoal text-creme"
+        className="relative flex h-[100svh] min-h-[640px] w-full items-end overflow-hidden text-creme"
+        style={{ background: "var(--bg-deep)" }}
       >
         {hasImage ? (
           <>
@@ -330,7 +331,7 @@ export default function RecipePage() {
             className="absolute inset-0 flex items-center justify-center"
             style={{
               background:
-                "linear-gradient(135deg, #8B9A6C 0%, #2D2A26 55%, #C97B5F 100%)",
+                "linear-gradient(135deg, #8B3A6A 0%, #1A0A24 55%, #D4A574 100%)",
             }}
             aria-hidden
           >
@@ -340,12 +341,12 @@ export default function RecipePage() {
           </div>
         )}
 
-        {/* gradient overlay */}
+        {/* gradient overlay aubergine */}
         <div
           className="pointer-events-none absolute inset-0"
           style={{
             background:
-              "linear-gradient(180deg, rgba(45,42,38,0.55) 0%, rgba(45,42,38,0) 28%, rgba(45,42,38,0) 50%, rgba(45,42,38,0.92) 100%)",
+              "linear-gradient(180deg, rgba(26,10,36,0.6) 0%, rgba(26,10,36,0) 28%, rgba(26,10,36,0) 45%, rgba(26,10,36,0.95) 100%)",
           }}
         />
 
@@ -362,12 +363,16 @@ export default function RecipePage() {
           </button>
         </div>
 
-        {/* title bottom-left */}
+        {/* title bottom-left — gradient or-rose */}
         <div className="relative z-10 mx-auto w-full max-w-7xl px-8 pb-24 md:pb-28">
           <h1
             data-hero-title
-            className="font-serif italic leading-[0.92] tracking-[-0.035em] text-creme"
-            style={{ fontSize: "clamp(3.5rem, 9vw, 9rem)" }}
+            className="font-serif italic leading-[0.92] tracking-[-0.035em] text-gradient-gold-rose"
+            style={{
+              fontSize: "clamp(3.5rem, 9vw, 9rem)",
+              filter:
+                "drop-shadow(0 4px 30px rgba(26, 10, 36, 0.7)) drop-shadow(0 0 60px rgba(232, 168, 159, 0.25))",
+            }}
           >
             {recipe.nom}
           </h1>
@@ -402,10 +407,13 @@ export default function RecipePage() {
             <p className="mb-10 text-[0.62rem] uppercase tracking-[0.32em] text-terracotta">
               — Anecdote du pays
             </p>
-            <p className="font-serif text-[1.5rem] italic leading-[1.45] text-charcoal md:text-[1.85rem]">
+            <p
+              className="font-serif text-[1.5rem] italic leading-[1.45] md:text-[1.85rem]"
+              style={{ color: "var(--bg-deep)" }}
+            >
               <span
-                className="float-left mr-3 mt-1 font-serif text-[5.5rem] not-italic leading-[0.85] text-terracotta md:text-[7rem]"
-                style={{ fontStyle: "italic" }}
+                className="float-left mr-3 mt-1 font-serif text-[5.5rem] not-italic leading-[0.85] md:text-[7rem]"
+                style={{ fontStyle: "italic", color: "var(--or-doux)" }}
               >
                 {recipe.anecdote_pays.charAt(0)}
               </span>
@@ -549,8 +557,11 @@ export default function RecipePage() {
               >
                 <div
                   data-step-num
-                  className="col-span-3 font-serif italic leading-none tracking-[-0.04em] text-terracotta md:col-span-3"
-                  style={{ fontSize: "clamp(4rem, 8vw, 8rem)" }}
+                  className="col-span-3 font-serif italic leading-none tracking-[-0.04em] md:col-span-3"
+                  style={{
+                    fontSize: "clamp(4rem, 8vw, 8rem)",
+                    color: "var(--rose-poudre)",
+                  }}
                 >
                   {String(idx + 1).padStart(2, "0")}
                 </div>
@@ -575,15 +586,21 @@ export default function RecipePage() {
         <section className="border-b border-charcoal/8 bg-creme-warm px-8 py-32 md:py-44">
           <div className="mx-auto max-w-4xl text-center" data-reveal>
             <span
-              className="block font-serif italic leading-none text-terracotta/70"
-              style={{ fontSize: "clamp(5rem, 10vw, 9rem)" }}
+              className="block font-serif italic leading-none"
+              style={{
+                fontSize: "clamp(5rem, 10vw, 9rem)",
+                color: "var(--or-doux)",
+              }}
               aria-hidden
             >
               &ldquo;
             </span>
             <blockquote
-              className="mt-2 font-serif italic leading-[1.4] text-charcoal"
-              style={{ fontSize: "clamp(1.4rem, 2.6vw, 1.95rem)" }}
+              className="mt-2 font-serif italic leading-[1.4]"
+              style={{
+                fontSize: "clamp(1.4rem, 2.6vw, 1.95rem)",
+                color: "var(--bg-deep)",
+              }}
             >
               {recipe.astuce_chef}
             </blockquote>
@@ -660,7 +677,7 @@ export default function RecipePage() {
                 — Coût estimé
               </p>
               <div
-                className="font-serif italic leading-none tracking-[-0.04em] text-terracotta"
+                className="font-serif italic leading-none tracking-[-0.04em] text-gradient-gold-rose"
                 style={{ fontSize: "clamp(5rem, 11vw, 9.5rem)" }}
               >
                 {formatEur(recipe.cout_estime_eur)}
@@ -691,7 +708,7 @@ export default function RecipePage() {
                     cy="64"
                     r={SCORE_RADIUS}
                     fill="none"
-                    stroke="#C97B5F"
+                    stroke="#D4A574"
                     strokeWidth="2"
                     strokeLinecap="round"
                     strokeDasharray={SCORE_C}
@@ -723,7 +740,13 @@ export default function RecipePage() {
       {/* ─────────────────────────────────────────────────────────────
          SECTION 7 — ACTIONS
          ────────────────────────────────────────────────────────────── */}
-      <section className="bg-charcoal px-8 py-24 text-creme md:py-32">
+      <section
+        className="px-8 py-24 text-creme md:py-32"
+        style={{
+          background:
+            "linear-gradient(160deg, #1A0A24 0%, #2A1338 100%)",
+        }}
+      >
         <div className="mx-auto flex max-w-7xl flex-col gap-12">
           <div className="flex items-center justify-between" data-reveal>
             <p className="text-[0.62rem] uppercase tracking-[0.32em] text-creme/55">
@@ -776,11 +799,40 @@ function ActionButton({
   return (
     <button
       onClick={onClick}
-      className={`group inline-flex items-center gap-4 border px-7 py-4 text-[0.7rem] font-medium uppercase tracking-[0.25em] transition-all duration-300 ${
+      className="group inline-flex items-center gap-4 px-7 py-4 text-[0.7rem] font-medium uppercase tracking-[0.25em] transition-all duration-300"
+      style={
         primary
-          ? "border-terracotta bg-terracotta text-creme hover:bg-creme hover:text-charcoal"
-          : "border-creme/25 text-creme hover:border-terracotta hover:bg-terracotta hover:text-creme"
-      }`}
+          ? {
+              border: "1px solid var(--or-doux)",
+              background:
+                "linear-gradient(135deg, var(--or-bright) 0%, var(--or-doux) 100%)",
+              color: "var(--bg-deep)",
+              fontWeight: 600,
+              boxShadow:
+                "0 10px 30px -10px rgba(212, 165, 116, 0.4)",
+            }
+          : {
+              border: "1px solid rgba(248, 242, 234, 0.25)",
+              color: "var(--text-primary)",
+              background: "transparent",
+            }
+      }
+      onMouseEnter={(e) => {
+        if (primary) {
+          e.currentTarget.style.transform = "translateY(-2px)";
+        } else {
+          e.currentTarget.style.borderColor = "var(--rose-poudre)";
+          e.currentTarget.style.background = "rgba(232, 168, 159, 0.08)";
+        }
+      }}
+      onMouseLeave={(e) => {
+        if (primary) {
+          e.currentTarget.style.transform = "translateY(0)";
+        } else {
+          e.currentTarget.style.borderColor = "rgba(248, 242, 234, 0.25)";
+          e.currentTarget.style.background = "transparent";
+        }
+      }}
     >
       <span>{label}</span>
       <span className="inline-block transition-transform duration-300 group-hover:translate-x-1">

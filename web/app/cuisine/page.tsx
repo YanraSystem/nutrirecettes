@@ -70,7 +70,7 @@ function playBeep(): void {
  * Confetti (very light Framer Motion based)
  * -------------------------------------------------------------------------- */
 
-const CONFETTI_COLORS = ["#C97B5F", "#FAF7F2", "#8B9A6C", "#A85A3F"];
+const CONFETTI_COLORS = ["#E8C088", "#F4B5A6", "#D4A574", "#E8A89F"];
 
 function Confetti(): React.ReactElement {
   const pieces = useMemo(() => {
@@ -278,7 +278,13 @@ export default function CuisinePage() {
 
   if (missingRecipe) {
     return (
-      <main className="flex min-h-screen flex-col items-center justify-center bg-charcoal px-8 text-creme">
+      <main
+        className="flex min-h-screen flex-col items-center justify-center px-8 text-creme"
+        style={{
+          background:
+            "linear-gradient(160deg, #1A0A24 0%, #2A1338 100%)",
+        }}
+      >
         <p className="mb-10 text-[0.62rem] uppercase tracking-[0.32em] text-creme/55">
           — Cuisine pas-à-pas
         </p>
@@ -305,7 +311,10 @@ export default function CuisinePage() {
 
   if (!recipe) {
     return (
-      <main className="flex min-h-screen items-center justify-center bg-charcoal text-creme/55">
+      <main
+        className="flex min-h-screen items-center justify-center text-creme/55"
+        style={{ background: "var(--bg-primary)" }}
+      >
         <p className="text-[0.7rem] uppercase tracking-[0.32em]">Chargement…</p>
       </main>
     );
@@ -317,7 +326,11 @@ export default function CuisinePage() {
   return (
     <main
       ref={stageRef}
-      className="relative flex min-h-[100svh] flex-col overflow-hidden bg-charcoal text-creme"
+      className="relative flex min-h-[100svh] flex-col overflow-hidden text-creme"
+      style={{
+        background:
+          "linear-gradient(160deg, #1A0A24 0%, #2A1338 60%, #3A2050 100%)",
+      }}
     >
       {/* Timer flash border */}
       <AnimatePresence>
@@ -329,7 +342,7 @@ export default function CuisinePage() {
             exit={{ opacity: 0 }}
             transition={{ duration: 1.1, ease: "easeInOut" }}
             className="pointer-events-none absolute inset-0 z-30"
-            style={{ boxShadow: "inset 0 0 0 3px #C97B5F" }}
+            style={{ boxShadow: "inset 0 0 0 3px #D4A574" }}
           />
         )}
       </AnimatePresence>
@@ -395,10 +408,11 @@ export default function CuisinePage() {
                     x: direction === 1 ? 40 : -40,
                   }}
                   transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
-                  className="select-none font-serif italic leading-[0.85] tracking-[-0.04em]"
+                  className="select-none font-serif italic leading-[0.85] tracking-[-0.04em] text-gradient-gold-rose"
                   style={{
                     fontSize: "clamp(8rem, 18vw, 16rem)",
-                    color: "rgba(201,123,95,0.6)",
+                    filter:
+                      "drop-shadow(0 0 50px rgba(232, 168, 159, 0.35))",
                   }}
                 >
                   {String(currentStep + 1).padStart(2, "0")}
@@ -457,7 +471,14 @@ export default function CuisinePage() {
 
       {/* ─────────── Timer (bottom-left sticky) ─────────── */}
       <div className="pointer-events-none fixed bottom-20 left-0 right-0 z-20 px-6 md:left-12 md:right-auto md:px-0">
-        <div className="pointer-events-auto inline-flex flex-col gap-3 border border-creme/10 bg-charcoal/85 px-5 py-4 backdrop-blur md:bg-charcoal/60">
+        <div
+          className="pointer-events-auto inline-flex flex-col gap-3 px-5 py-4 backdrop-blur"
+          style={{
+            border: "1px solid rgba(232, 168, 159, 0.18)",
+            background: "rgba(26, 10, 36, 0.85)",
+            boxShadow: "0 12px 30px -12px rgba(0,0,0,0.5)",
+          }}
+        >
           <div className="flex items-baseline justify-between gap-6">
             <p className="text-[0.58rem] uppercase tracking-[0.32em] text-creme/55">
               — Minuteur
@@ -478,7 +499,23 @@ export default function CuisinePage() {
                 <button
                   key={p.label}
                   onClick={() => startTimer(p.minutes)}
-                  className="border border-creme/15 px-3 py-1.5 text-[0.6rem] uppercase tracking-[0.28em] text-creme/80 transition-all duration-300 hover:border-terracotta hover:bg-terracotta hover:text-creme"
+                  className="px-3 py-1.5 text-[0.6rem] uppercase tracking-[0.28em] transition-all duration-300"
+                  style={{
+                    border: "1px solid rgba(248, 242, 234, 0.18)",
+                    color: "rgba(248, 242, 234, 0.85)",
+                    background: "transparent",
+                  }}
+                  onMouseEnter={(e) => {
+                    e.currentTarget.style.borderColor = "var(--or-doux)";
+                    e.currentTarget.style.background = "var(--or-doux)";
+                    e.currentTarget.style.color = "var(--bg-deep)";
+                  }}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.borderColor =
+                      "rgba(248, 242, 234, 0.18)";
+                    e.currentTarget.style.background = "transparent";
+                    e.currentTarget.style.color = "rgba(248, 242, 234, 0.85)";
+                  }}
                 >
                   {p.label}
                 </button>
@@ -487,8 +524,11 @@ export default function CuisinePage() {
           ) : (
             <div className="flex items-baseline gap-4">
               <span
-                className="font-serif italic leading-none text-terracotta tabular-nums"
-                style={{ fontSize: "clamp(2.2rem, 4vw, 3rem)" }}
+                className="font-serif italic leading-none tabular-nums"
+                style={{
+                  fontSize: "clamp(2.2rem, 4vw, 3rem)",
+                  color: "var(--or-bright)",
+                }}
               >
                 {formatCountdown(timerSeconds)}
               </span>
@@ -515,11 +555,22 @@ export default function CuisinePage() {
       </div>
 
       {/* ─────────── Bottom bar ─────────── */}
-      <footer className="relative z-20 border-t border-creme/8 bg-charcoal">
-        {/* Progress bar */}
-        <div className="h-px w-full bg-creme/10">
+      <footer
+        className="relative z-20"
+        style={{
+          borderTop: "1px solid rgba(248, 242, 234, 0.08)",
+          background: "rgba(26, 10, 36, 0.92)",
+        }}
+      >
+        {/* Progress bar — gradient or-bright */}
+        <div className="h-px w-full" style={{ background: "rgba(248, 242, 234, 0.1)" }}>
           <motion.div
-            className="h-px bg-terracotta"
+            className="h-px"
+            style={{
+              background:
+                "linear-gradient(90deg, var(--or-doux) 0%, var(--or-bright) 50%, var(--rose-poudre) 100%)",
+              boxShadow: "0 0 8px rgba(232, 192, 136, 0.5)",
+            }}
             initial={{ width: 0 }}
             animate={{ width: `${progress * 100}%` }}
             transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
@@ -547,11 +598,42 @@ export default function CuisinePage() {
 
           <button
             onClick={next}
-            className={`group inline-flex items-center gap-3 border px-6 py-3 text-[0.65rem] uppercase tracking-[0.32em] transition-all duration-300 ${
+            className="group inline-flex items-center gap-3 px-6 py-3 text-[0.65rem] uppercase tracking-[0.32em] transition-all duration-300"
+            style={
               isLast
-                ? "border-terracotta bg-terracotta text-creme hover:bg-creme hover:text-charcoal"
-                : "border-creme/25 text-creme hover:border-terracotta hover:bg-terracotta"
-            }`}
+                ? {
+                    border: "1px solid var(--or-doux)",
+                    background:
+                      "linear-gradient(135deg, var(--or-bright) 0%, var(--or-doux) 100%)",
+                    color: "var(--bg-deep)",
+                    fontWeight: 600,
+                    boxShadow:
+                      "0 10px 30px -8px rgba(212, 165, 116, 0.45)",
+                  }
+                : {
+                    border: "1px solid rgba(248, 242, 234, 0.25)",
+                    color: "var(--text-primary)",
+                    background: "transparent",
+                  }
+            }
+            onMouseEnter={(e) => {
+              if (isLast) {
+                e.currentTarget.style.transform = "translateY(-2px)";
+              } else {
+                e.currentTarget.style.borderColor = "var(--rose-poudre)";
+                e.currentTarget.style.background =
+                  "rgba(232, 168, 159, 0.08)";
+              }
+            }}
+            onMouseLeave={(e) => {
+              if (isLast) {
+                e.currentTarget.style.transform = "translateY(0)";
+              } else {
+                e.currentTarget.style.borderColor =
+                  "rgba(248, 242, 234, 0.25)";
+                e.currentTarget.style.background = "transparent";
+              }
+            }}
           >
             <span>{isLast ? "Terminé" : "Suivant"}</span>
             <span

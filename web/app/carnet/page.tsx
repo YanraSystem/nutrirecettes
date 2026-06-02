@@ -180,7 +180,7 @@ export default function CarnetPage() {
           — Votre cuisine personnelle
         </p>
         <h1
-          className="max-w-3xl text-center font-serif italic leading-[1.05] text-charcoal"
+          className="max-w-3xl text-center font-serif italic leading-[1.05] text-gradient-gold-rose-deep"
           style={{ fontSize: "clamp(2.4rem, 6vw, 4.5rem)" }}
         >
           &laquo; Aucune recette dans le carnet pour l&apos;instant. &raquo;
@@ -216,7 +216,7 @@ export default function CarnetPage() {
               — Votre cuisine personnelle
             </p>
             <h1
-              className="font-serif italic leading-[0.95] tracking-[-0.02em] text-charcoal"
+              className="font-serif italic leading-[0.95] tracking-[-0.02em] text-gradient-gold-rose-deep"
               style={{ fontSize: "clamp(2.8rem, 7vw, 5.5rem)" }}
             >
               Carnet de recettes
@@ -309,7 +309,7 @@ export default function CarnetPage() {
                         className="absolute inset-0 flex items-center justify-center transition-transform duration-[700ms] ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:scale-[1.04]"
                         style={{
                           background:
-                            "linear-gradient(135deg, #8B9A6C 0%, #2D2A26 60%, #C97B5F 100%)",
+                            "linear-gradient(135deg, #8B3A6A 0%, #1A0A24 60%, #D4A574 100%)",
                         }}
                       >
                         <span className="select-none text-[5rem] leading-none opacity-50">
@@ -323,7 +323,7 @@ export default function CarnetPage() {
                       className="absolute inset-0 transition-opacity duration-500"
                       style={{
                         background:
-                          "linear-gradient(180deg, rgba(45,42,38,0) 50%, rgba(45,42,38,0.65) 100%)",
+                          "linear-gradient(180deg, rgba(26,10,36,0) 45%, rgba(26,10,36,0.78) 100%)",
                         opacity: isHover ? 1 : 0.55,
                       }}
                     />
